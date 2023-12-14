@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using stackblob.Application.Mapping;
 using stackblob.Application.Models.DTOs.Answers;
-using stackblob.Application.Models.DTOs.Attachments;
 using stackblob.Application.Models.DTOs.Tags;
 
 namespace stackblob.Application.Models.DTOs.Questions;

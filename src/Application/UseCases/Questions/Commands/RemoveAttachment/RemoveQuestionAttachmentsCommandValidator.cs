@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using stackblob.Application.Interfaces;
 using stackblob.Application.Interfaces.Services;
 using stackblob.Application.Models;
-using stackblob.Application.UseCases.Questions.Commands.AddAttachment;
 using stackblob.Application.UseCases.Questions.Validators;
 using stackblob.Application.UseCases.Validators;
 
@@ -26,12 +25,6 @@ public class RemoveQuestionAttachmentsCommandValidator : AbstractValidator<Remov
 
             if (attachments?.Any() ?? false)
             {
-                var dbAttachments = await ctx.Attachments.Where(a => a.TypeId == AttachmentType.QuestionAttachment 
-                                                                    && attachments.Contains(a.AttachmentId)
-                                                                    && a.QuestionId == cmd.QuestionId
-                                                          )
-                                                         .ToListAsync(cancellationToken);
-                return dbAttachments.Count >= attachments.Count;
             }
 
             return false;

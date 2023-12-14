@@ -8,7 +8,6 @@ using AutoMapper;
 using MediatR;
 using stackblob.Application.Interfaces.Services;
 using stackblob.Application.Interfaces;
-using stackblob.Application.Models.DTOs.Attachments;
 using stackblob.Application.Attributes;
 using stackblob.Application.Models.DTOs.Questions;
 using Microsoft.EntityFrameworkCore;
@@ -26,14 +25,12 @@ public class GetQuestionCommandHandler : IRequestHandler<GetQuestionQuery, Quest
 {
     private readonly IStackblobDbContext _context;
     private readonly IMapper _mapper;
-    private readonly IFileService _fileService;
     private readonly ICurrentUserService _currentUser;
 
-    public GetQuestionCommandHandler(IStackblobDbContext context, IMapper mapper, IFileService fileService, ICurrentUserService currentUser)
+    public GetQuestionCommandHandler(IStackblobDbContext context, IMapper mapper, ICurrentUserService currentUser)
     {
         _context = context;
         _mapper = mapper;
-        _fileService = fileService;
         _currentUser = currentUser;
     }
     public async Task<QuestionReadDto> Handle(GetQuestionQuery request, CancellationToken cancellationToken)

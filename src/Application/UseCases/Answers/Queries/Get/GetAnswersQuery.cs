@@ -39,7 +39,6 @@ public class GetAnswersQueryHandler : IRequestHandler<GetAnswersQuery, ICollecti
         {
             case GetAnswersOrderBy.Newest: query = query.OrderByDescending(a => a.CreatedAt); break;
             case GetAnswersOrderBy.Oldest: query = query.OrderBy(a => a.CreatedAt); break;
-            case GetAnswersOrderBy.Popularity: query = query.OrderByDescending(a => a.AnswerVotes.Where(a => a.IsUpVote).Count()); break;
         }
 
         return await query.ProjectTo<AnswerReadDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);

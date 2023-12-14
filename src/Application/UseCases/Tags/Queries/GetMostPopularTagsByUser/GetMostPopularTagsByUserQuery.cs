@@ -23,14 +23,12 @@ public class GetMostPopularTagsByUserQueryHandler : IRequestHandler<GetMostPopul
 {
     private readonly IStackblobDbContext _context;
     private readonly IMapper _mapper;
-    private readonly IFileService _fileService;
     private readonly ICurrentUserService _currentUser;
 
-    public GetMostPopularTagsByUserQueryHandler(IStackblobDbContext context, IMapper mapper, IFileService fileService, ICurrentUserService currentUser)
+    public GetMostPopularTagsByUserQueryHandler(IStackblobDbContext context, IMapper mapper, ICurrentUserService currentUser)
     {
         _context = context;
         _mapper = mapper;
-        _fileService = fileService;
         _currentUser = currentUser;
     }
     public async Task<ICollection<TagUsageDto>> Handle(GetMostPopularTagsByUserQuery request, CancellationToken cancellationToken)

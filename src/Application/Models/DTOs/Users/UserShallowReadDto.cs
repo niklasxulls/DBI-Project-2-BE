@@ -19,7 +19,6 @@ public class UserShallowReadDto : IMapFrom<User>
     public void Mapping(Profile p)
     {
         p.CreateMap<User, UserShallowReadDto>()
-            .ForMember(d => d.ProfilePictureUrl, s => s.MapFrom(src => src.ProfilePicture != null ? FileSettings.PublicFileBaseUrl + src.ProfilePicture.RelativePath : null))
             .ReverseMap();
         ;
     }

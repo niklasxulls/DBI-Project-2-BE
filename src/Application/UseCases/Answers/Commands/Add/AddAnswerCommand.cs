@@ -12,7 +12,6 @@ using stackblob.Application.Interfaces.Services;
 using stackblob.Application.Mapping;
 using stackblob.Application.Models;
 using stackblob.Application.Models.DTOs.Answers;
-using stackblob.Application.Models.DTOs.Attachments;
 using stackblob.Application.Models.DTOs.Questions;
 
 namespace stackblob.Application.UseCases.Questions.Commands.AddQuestion;
@@ -24,8 +23,7 @@ public class AddAnswerCommand : AnswerWriteDto, IRequest<AnswerReadDto>, IMapFro
     public new void Mapping(Profile p)
     {
         p.CreateMap<AddAnswerCommand, Answer>()
-         .IncludeBase<AnswerWriteDto, Answer>()
-         .ForMember(q => q.Attachments, src => src.Ignore());
+         .IncludeBase<AnswerWriteDto, Answer>();
     }
 }
 
@@ -47,12 +45,6 @@ public class AddAnswerCommandHandler : IRequestHandler<AddAnswerCommand, AnswerR
 
         if (request.Attachments?.Any() ?? false)
         {
-            var attachments = await _context.Attachments.Where(a => request.Attachments.Contains(a.AttachmentId)).ToListAsync(cancellationToken);
-            attachments.ForEach(a =>
-            {
-                a.TypeId = AttachmentType.AnswerAttachment;
-                answer.Attachments.Add(a);
-            });
         }
 
         await _context.SaveChangesAsync(cancellationToken);

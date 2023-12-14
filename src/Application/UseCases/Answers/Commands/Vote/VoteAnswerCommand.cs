@@ -34,24 +34,6 @@ public class VoteAnswerCOmmandHandler : IRequestHandler<VoteAnswerCommand>
     }
     public async Task<Unit> Handle(VoteAnswerCommand request, CancellationToken cancellationToken)
     {
-        var vote = await _context.Votes.FirstOrDefaultAsync(q => q.CreateByInAnswerId == _currentUser.UserId && q.QuestionId == request.QuestionId && q.AnswerId == q.AnswerId, cancellationToken);
-
-        if(vote != null)
-        {
-            vote.IsUpVote = request.IsUpVote;
-        } else
-        {
-            await _context.Votes.AddAsync(new Vote()
-            {
-                QuestionId = request.QuestionId,
-                AnswerId = request.AnswerId,
-                CreateByInAnswerId = _currentUser.UserId ?? 0,
-                IsUpVote = request.IsUpVote,
-            }, cancellationToken);
-        }
-
-        await _context.SaveChangesAsync(cancellationToken);
-
         return Unit.Value;
     }
 }

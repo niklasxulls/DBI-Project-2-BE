@@ -31,15 +31,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(u => u.Email).IsUnique();
 
         builder.Ignore(u => u.Name);
-        builder.Ignore(u => u.Reputation);
-
-        builder.HasOne(u => u.Banner).WithOne(a => a.UserBannerPicture).HasForeignKey<User>(u => u.BannerId);
-        builder.HasOne(u => u.ProfilePicture).WithOne(a => a.UserProfilePicture).HasForeignKey<User>(u => u.ProfilePictureId);
-
-
-        builder.HasMany(u => u.RefreshTokens).WithOne(r => r.User);
-        builder.HasMany(u => u.Socials).WithOne(r => r.User);
-        builder.HasMany(u => u.LoginLocations).WithOne(r => r.User);
     }
 
 }

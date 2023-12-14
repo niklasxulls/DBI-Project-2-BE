@@ -19,11 +19,6 @@ public class AddQuestionCommandValidator : AbstractValidator<AddQuestionCommand>
 
         RuleFor(a => a.Attachments).MustAsync(async (attachments, cancellationToken) =>
         {
-            if (attachments?.Any() ?? false)
-            {
-                var dbAttachments = await ctx.Attachments.Where(a => a.TypeId == AttachmentType.UpcomingQuestionAttachment && attachments.Contains(a.AttachmentId)).ToListAsync(cancellationToken);
-                return dbAttachments.Count == attachments.Count;
-            }
 
             return true;
         });

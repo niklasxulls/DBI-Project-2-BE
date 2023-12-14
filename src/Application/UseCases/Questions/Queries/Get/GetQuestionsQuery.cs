@@ -29,14 +29,12 @@ public class SearchQuestionQueryHandler : IRequestHandler<GetQuestionsQuery, ICo
 {
     private readonly IStackblobDbContext _context;
     private readonly IMapper _mapper;
-    private readonly IFileService _fileService;
     private readonly ICurrentUserService _currentUser;
 
-    public SearchQuestionQueryHandler(IStackblobDbContext context, IMapper mapper, IFileService fileService, ICurrentUserService currentUser)
+    public SearchQuestionQueryHandler(IStackblobDbContext context, IMapper mapper, ICurrentUserService currentUser)
     {
         _context = context;
         _mapper = mapper;
-        _fileService = fileService;
         _currentUser = currentUser;
     }
     public async Task<ICollection<QuestionReadShallowDto>> Handle(GetQuestionsQuery request, CancellationToken cancellationToken)

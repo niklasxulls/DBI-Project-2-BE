@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using stackblob.Application.Interfaces;
 using stackblob.Application.Interfaces.Services;
 using stackblob.Application.Models;
-using stackblob.Application.Models.DTOs.Attachments;
 using stackblob.Application.Models.DTOs.Questions;
 
 namespace stackblob.Application.UseCases.Questions.Commands.AddQuestion;

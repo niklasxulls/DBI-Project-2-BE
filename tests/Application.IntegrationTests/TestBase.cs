@@ -28,8 +28,6 @@ public class TestBase : IAsyncLifetime
     private readonly SetupFixture _setup;
     protected readonly IServiceScope _scope;
     protected readonly StackblobDbContext _context;
-    protected IAuthService _auth;
-    public IFileService _fileService;
     protected readonly IMapper _mapper;
     protected Dictionary<int, string> UserPasswords = new();
     private User _defaultUser;
@@ -51,9 +49,7 @@ public class TestBase : IAsyncLifetime
         _setup = setup;
         _scope = _setup._scopeFactory.CreateScope();
         _context = _scope.ServiceProvider.GetRequiredService<StackblobDbContext>();
-        _auth = _scope.ServiceProvider.GetRequiredService<IAuthService>();
         _mapper = _scope.ServiceProvider.GetRequiredService<IMapper>();
-        _fileService = _scope.ServiceProvider.GetRequiredService<IFileService>();
         _context.Database.EnsureDeleted();
         _context.Database.EnsureCreated();
     }
@@ -64,7 +60,6 @@ public class TestBase : IAsyncLifetime
         _setup.CurrentUserIsVerified = !explicitNonUser && !userIsNotVerified;
 
         var mediator = _scope.ServiceProvider.GetRequiredService<ISender>();
-        _fileService = _scope.ServiceProvider.GetRequiredService<IFileService>();
 
         return await mediator.Send(request);
     }
@@ -73,7 +68,6 @@ public class TestBase : IAsyncLifetime
 
     private async Task ClearFS()
     {
-        await _fileService.ClearAll();
     }
 
     private async Task FillDB()
@@ -83,30 +77,10 @@ public class TestBase : IAsyncLifetime
         #region Populate Users DBContext Collection
 
 
-        List<SocialTypeType> socialsTest = _context.SocialTypes.ToList() ?? new List<SocialTypeType>();
-
-        Faker<SocialTypeType> socialFaker = new Faker<SocialTypeType>()
-            .Rules((f, s) =>
-            {
-                var socialType = f.PickRandom(socialsTest);
-
-                s.SocialTypeId = socialType!.SocialTypeId;
-                s.Name = socialType!.Name;
-                s.Desc = socialType!.Desc;
-            });
-
         Faker<User> userFaker = new Faker<User>()
             .RuleFor(u => u.Firstname, f => f.Person.FirstName)
             .RuleFor(u => u.Lastname, f => f.Person.LastName)
             .RuleFor(u => u.Password, f => f.Internet.Password())
-            .RuleFor(u => u.Socials, (f, u) => socialFaker.GenerateBetween(1, 3).DistinctBy(s => s.SocialTypeId).Select(s =>
-                new UserSocialType()
-                {
-
-                    SocialTypeId = s.SocialTypeId,
-                    User = u,
-                    Url = f.Internet.Url()
-                }).ToList())
             .RuleFor(u => u.Email, f => f.Internet.Email());
 
 
@@ -120,11 +94,6 @@ public class TestBase : IAsyncLifetime
             UserPasswords[user!.UserId] = user.Password;
             user.Salt = CryptoUtil.CreateSalt();
             user.Password = CryptoUtil.CreateHash(user.Salt + user.Password);
-            user.EmailVerficiations.Add(new()
-            {
-                IsVerified = true,
-                ExpiresAt = DateTimeUtil.Now(),
-            });
             _context.SaveChanges();
         }
 
@@ -198,27 +167,7 @@ public class TestBase : IAsyncLifetime
             
             for(int i=0; i<questions.Count; i++)
             {
-                answers[i].Comments.Add(new Comment()
-                {
-                    CreatedByInAnswerId = user.UserId,
-                    Answer = answers[i],
-                    Question = questions[i],
-                    Description = "Test answer comment"
-                });
                 questions[i].Answers.Add(answers[i]);
-
-                questions[i].QuestionVotes.Add(new Vote()
-                {
-                    IsUpVote = new Random().Next(1, 10) < 7,
-                    CreateByInQuestionId = user.UserId
-                })
-                    ;
-                questions[i].Comments.Add(new Comment()
-                {
-                    Question = questions[i],
-                    CreatedByInQuestionId = user.UserId,
-                    Description = "Test question comment"
-                });
 
                 if (!hasCorrectQuestion && !noCorrectAnswers.Contains(questions[i].QuestionId) && questions[i].CorrectAnswer == null) {
                     questions[i].CorrectAnswer = answers[i];

@@ -39,7 +39,7 @@ public static class InfrastructureExtension
         connectionString = configuration.GetConnectionString("DefaultConnection");
 #endif
 
-        if (configuration.GetValue<bool>("UseMongoDB"))
+        if (configuration.GetValue<bool>("IsMongoDb"))
         {
             var databaseName = configuration.GetConnectionString("DBName");
 
@@ -61,6 +61,8 @@ public static class InfrastructureExtension
         }
 
         services.AddScoped<IStackblobDbContext>(provider => provider.GetRequiredService<StackblobDbContext>());
+
+        services.Configure<AppConfig>(configuration);
 
 
         /*
@@ -113,7 +115,6 @@ public static class InfrastructureExtension
             x.TokenValidationParameters = validationParameters;
         });
 
-        services.AddTransient<IAuthService, AuthService>();
 
 
         /*
@@ -130,7 +131,6 @@ public static class InfrastructureExtension
             AttachmentSettings.BaseUrl = service.GetBlobContainerClient("").Uri.AbsoluteUri;
             return service;
         });
-        services.AddTransient<IFileService, GoogleCloudFileService>();
 
 
         /*

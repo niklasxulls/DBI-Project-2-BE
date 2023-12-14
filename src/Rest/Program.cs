@@ -26,12 +26,14 @@ namespace Rest
                 try
                 {
                     var context = services.GetRequiredService<StackblobDbContext>();
-                    var fileService = services.GetRequiredService<IFileService>();
 
                     context.Database.EnsureCreated();
 
-                    AuthService auth = services.GetRequiredService<IAuthService>() as AuthService;
                     await StackblobDbContextSeed.SeedSampleData(context);
+                }
+                catch(Exception e)
+                {
+                    var x = 2;
                 }
                 finally
                 {

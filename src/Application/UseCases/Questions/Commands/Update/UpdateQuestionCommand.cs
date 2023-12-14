@@ -31,13 +31,11 @@ public class UpdateQuestionCommandHandler : IRequestHandler<UpdateQuestionComman
 {
     private readonly IStackblobDbContext _context;
     private readonly IMapper _mapper;
-    private readonly IFileService _fileService;
 
-    public UpdateQuestionCommandHandler(IStackblobDbContext context, IMapper mapper, IFileService fileService)
+    public UpdateQuestionCommandHandler(IStackblobDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        _fileService = fileService;
     }
     public async Task<QuestionReadDto> Handle(UpdateQuestionCommand request, CancellationToken cancellationToken)
     {

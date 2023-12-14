@@ -20,41 +20,13 @@ public class RemoveQuestionAttachmentsCommand : IRequest
 public class RemoveQuestionAttachmentsCommandHandler : IRequestHandler<RemoveQuestionAttachmentsCommand>
 {
     private readonly IStackblobDbContext _context;
-    private readonly IFileService _fileService;
 
-    public RemoveQuestionAttachmentsCommandHandler(IStackblobDbContext context, IFileService fileService)
+    public RemoveQuestionAttachmentsCommandHandler(IStackblobDbContext context)
     {
         _context = context;
-        _fileService = fileService;
     }
     public async Task<Unit> Handle(RemoveQuestionAttachmentsCommand request, CancellationToken cancellationToken)
     {
-        List<Attachment> dbAttachments = await _context.Attachments.Where(a => request.Attachments.Contains(a.AttachmentId)).ToListAsync(cancellationToken);
-
-        var removedAttachments = await _fileService.RemoveAttachments(cancellationToken, dbAttachments.ToArray());
-        
-        var failedToRemoveAttachments = new List<Attachment>();
-        var successfullyRemovedAttachments = new List<Attachment>();
-
-        dbAttachments.ForEach(a =>
-        {
-            if (!removedAttachments.Any(ra => a.AttachmentId == ra))
-            {
-                failedToRemoveAttachments.Add(a);
-            } else
-            {
-                successfullyRemovedAttachments.Add(a);
-            }
-        });
-
-        _context.Attachments.RemoveRange(successfullyRemovedAttachments);
-        await _context.SaveChangesAsync(cancellationToken);
-
-        if(removedAttachments.Count != dbAttachments.Count)
-        {
-            throw new ActionOnlyPartlyFullfiledException($"Couldn't delete attachments {failedToRemoveAttachments.Select(a => a.AttachmentId)}");
-        }
-
         return Unit.Value;
     }
 }

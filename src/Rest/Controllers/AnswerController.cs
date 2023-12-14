@@ -1,15 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using stackblob.Application.Models.DTOs.Answers;
-using stackblob.Application.Models.DTOs.Attachments;
 using stackblob.Application.Models.DTOs.Auth;
 using stackblob.Application.Models.DTOs.Questions;
-using stackblob.Application.UseCases.Answers.Commands.AddAttachment;
 using stackblob.Application.UseCases.Answers.Commands.RemoveAttachment;
 using stackblob.Application.UseCases.Answers.Commands.Votes;
 using stackblob.Application.UseCases.Answers.Queries.Get;
-using stackblob.Application.UseCases.Auth.Commands.Register;
-using stackblob.Application.UseCases.Questions.Commands.AddAttachment;
 using stackblob.Application.UseCases.Questions.Commands.AddQuestion;
 using stackblob.Application.UseCases.Questions.Commands.RemoveAttachment;
 using stackblob.Application.UseCases.Questions.Commands.RemoveQuestion;
@@ -55,12 +51,6 @@ public class AnswerController : ApiControllerBase
     {
         await Mediator.Send(cmd);
         return NoContent();
-    }
-
-    [HttpPost, Route("attachment")]
-    public async Task<ActionResult<ICollection<AttachmentReadDto>>> AddAttachments([FromForm] AddAnswerAttachmentsCommand cmd)
-    {
-        return (await Mediator.Send(cmd)).ToList();
     }
 
     [HttpDelete, Route("attachments")]

@@ -8,17 +8,6 @@ using Microsoft.AspNetCore.Http;
 namespace stackblob.Infrastructure.Util;
 public static class FileUtil
 {
-    public static ICollection<Attachment> AttachmentsFromFormFiles(AttachmentType type, params IFormFile[] formFiles)
-    {
-        return formFiles.Select(f => new Attachment()
-        {
-            Name = f.Name ?? f.FileName,
-            TypeId = type,
-            RelativePath = BuildFileName(type, f.FileName),
-            Size = (int)f.Length,
-        }).ToList();
-    }
-
     public static string GetFolderByAttachmentType(AttachmentType t)
     {
         switch (t)

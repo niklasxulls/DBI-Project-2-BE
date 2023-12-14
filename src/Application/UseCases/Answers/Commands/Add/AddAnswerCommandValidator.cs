@@ -24,8 +24,6 @@ public class AddAnswerCommandValidator : AbstractValidator<AddAnswerCommand>
         {
             if (attachments?.Any() ?? false)
             {
-                var dbAttachments = await ctx.Attachments.Where(a => a.TypeId == AttachmentType.UpComingAnswerAttachment && attachments.Contains(a.AttachmentId)).ToListAsync(cancellationToken);
-                return dbAttachments.Count == attachments.Count;
             }
 
             return true;

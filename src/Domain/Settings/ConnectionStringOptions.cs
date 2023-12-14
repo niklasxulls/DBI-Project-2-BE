@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 namespace stackblob.Domain.Settings;
 public class ConnectionStringOptions
 {
-    public bool IsMongoDb { get; set; }
     public string DbName { get; set; }
+}
+
+
+
+public class AppConfig
+{
+    public bool IsMongoDb { get; set; }
 }

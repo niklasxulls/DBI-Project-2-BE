@@ -12,7 +12,6 @@ using stackblob.Application.Interfaces.Services;
 using stackblob.Application.Mapping;
 using stackblob.Application.Models;
 using stackblob.Application.Models.DTOs.Answers;
-using stackblob.Application.Models.DTOs.Attachments;
 using stackblob.Application.Models.DTOs.Questions;
 using stackblob.Application.UseCases.Questions.Commands.UpdateQuestion;
 

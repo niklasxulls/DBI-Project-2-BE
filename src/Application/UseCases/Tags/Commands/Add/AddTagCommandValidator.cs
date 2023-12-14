@@ -8,7 +8,6 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using stackblob.Application.Interfaces.Services;
 using stackblob.Application.Interfaces;
-using stackblob.Application.Models.DTOs.Attachments;
 using stackblob.Application.Attributes;
 using stackblob.Application.Models.DTOs.Tags;
 using FluentValidation;

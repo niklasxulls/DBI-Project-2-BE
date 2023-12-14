@@ -35,9 +35,6 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
 
 
 
-        builder.HasMany(v => v.AnswerVotes).WithOne(q => q.Answer);
-        builder.HasMany(v => v.Comments).WithOne(q => q.Answer);
-        builder.HasMany(v => v.Attachments).WithOne(q => q.Answer);
 
     }
 }

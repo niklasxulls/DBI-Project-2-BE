@@ -40,12 +40,6 @@ public class AddQuestionCommandHandler : IRequestHandler<AddQuestionCommand, Que
 
         if (request.Attachments?.Any() ?? false)
         {
-            var attachments = await _context.Attachments.Where(a => request.Attachments.Contains(a.AttachmentId)).ToListAsync(cancellationToken);
-            attachments.ForEach(a =>
-            {
-                a.TypeId = AttachmentType.QuestionAttachment;
-                question.Attachments.Add(a);
-            });
         }
 
         await _context.SaveChangesAsync(cancellationToken);

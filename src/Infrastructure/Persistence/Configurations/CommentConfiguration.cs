@@ -18,11 +18,6 @@ namespace stackblob.Infrastructure.Persistence.Configurations
 
             builder.Property(r => r.Description).HasMaxLength(250);
                 
-            builder.HasOne(v => v.Question)
-                   .WithMany(q => q.Comments)
-                   .HasForeignKey(c => c.QuestionId)
-                   .OnDelete(DeleteBehavior.Cascade);
-
             builder.HasOne(v => v.Answer)
                    .WithMany(q => q.Comments)
                    .HasForeignKey(c => c.AnswerId)

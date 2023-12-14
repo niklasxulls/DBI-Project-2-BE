@@ -120,7 +120,6 @@ public static class InfrastructureExtension
         */
         var mailSection = configuration.GetSection("MailSettings");
         services.Configure<MailSettings>(mailSection);
-        services.AddTransient<IMailService, MailService>();
 
         /*
         * Global settings

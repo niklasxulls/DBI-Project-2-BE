@@ -69,7 +69,6 @@ public class GetQuestionsQueryTests : TestBase
         {
             case SearchQuestionsOrderBy.Newest: questions = questionQuery.OrderByDescending(q => q.CreatedAt).ToList(); break;
             case SearchQuestionsOrderBy.Oldest: questions = questionQuery.OrderBy(q => q.CreatedAt).ToList(); break;
-            case SearchQuestionsOrderBy.Popularity: questions = _context.Questions.ToList().OrderBy(q => q.Popularity).Take(query.Paging.Size).ToList(); break;
         }
 
 

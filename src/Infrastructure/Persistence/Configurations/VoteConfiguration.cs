@@ -16,10 +16,6 @@ namespace stackblob.Infrastructure.Persistence.Configurations
             builder.HasKey(r => r.VoteId);
             builder.Property(r => r.VoteId).UseIdentityColumn();
 
-            builder.HasOne(v => v.Question)
-                   .WithMany(q => q.QuestionVotes)
-                   .OnDelete(DeleteBehavior.Restrict);
-
             builder.HasOne(v => v.Answer)
                    .WithMany(a => a.AnswerVotes)
                    .OnDelete(DeleteBehavior.Restrict);

@@ -23,8 +23,6 @@ public class QuestionReadShallowDto : QuestionBaseDto, IMapFrom<Question>
 
     public void Mapping(Profile p)
     {
-        p.CreateMap<Question, QuestionReadShallowDto>()
-           .ForMember(d => d.VoteCnt, o=> o.MapFrom(src => src.QuestionVotes.Sum(v => v.IsUpVote ? 1 : -1)));
     }
 
 }

@@ -54,16 +54,14 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
     private readonly IMapper _mapper;
     private readonly IStackblobDbContext _context;
     private readonly IFileService _fileService;
-    private readonly IMailService _mailService;
     private readonly IMediator _mediator;
 
-    public RegisterUserCommandHandler(IAuthService auth, IMapper mapper, IStackblobDbContext context, IFileService fileService, IMailService mailService)
+    public RegisterUserCommandHandler(IAuthService auth, IMapper mapper, IStackblobDbContext context, IFileService fileService)
     {
         _auth = auth;
         _mapper = mapper;
         _context = context;
         _fileService = fileService;
-        _mailService = mailService;
     }
     public async Task<UserAuthDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
@@ -102,7 +100,6 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
         _context.UserEmailVerifications.Add(verification);
 
 
-        await _mailService.SendEmailVerification(user, verification.UserEmailVerificationAccess);
 
 
         await _context.SaveChangesAsync(cancellationToken);

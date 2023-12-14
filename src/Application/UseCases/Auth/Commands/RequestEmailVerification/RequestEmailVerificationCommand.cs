@@ -25,14 +25,12 @@ public class RequestEmailVerificationCommandHandler : IRequestHandler<RequestEma
     private readonly IStackblobDbContext _context;
     private readonly ICurrentUserService _currentUser;
     private readonly IMapper _mapper;
-    private readonly IMailService _mailService;
 
-    public RequestEmailVerificationCommandHandler(IStackblobDbContext context, ICurrentUserService currentUser, IMapper mapper, IMailService mailService)
+    public RequestEmailVerificationCommandHandler(IStackblobDbContext context, ICurrentUserService currentUser, IMapper mapper)
     {
         _context = context;
         _currentUser = currentUser;
         _mapper = mapper;
-        _mailService = mailService;
     }
 
     public async Task<UserEmailVerificationDto> Handle(RequestEmailVerificationCommand request, CancellationToken cancellationToken)
@@ -51,8 +49,6 @@ public class RequestEmailVerificationCommandHandler : IRequestHandler<RequestEma
         _context.UserEmailVerifications.Add(verification);
 
         await _context.SaveChangesAsync(cancellationToken);
-
-        await _mailService.SendEmailVerification(user, verification.UserEmailVerificationAccess);
 
         return _mapper.Map<UserEmailVerificationDto>(verification);
     }

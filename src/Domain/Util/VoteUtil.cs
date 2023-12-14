@@ -23,9 +23,6 @@ public static class VoteUtil
     {
         decimal reputation = 0.0m;
 
-        reputation += u.QuestionsCreated.SelectMany(x => x.QuestionVotes).Select(v => v.IsUpVote ? QuestionCreatedUpVoteReputationWeight : QuestionCreatedDownVoteReputationWeight).Sum();
-        reputation += u.Answers.SelectMany(x => x.AnswerVotes).Select(v => v.IsUpVote ? AnswerCreatedUpVoteReputationWeight : AnswerCreatedDownVoteReputationWeight).Sum();
-
         reputation += u.QuestionsCreated.Sum(x => QuestionsCreatedReputationWeight);
         reputation += u.Answers.Sum(x => AnswersCreatedReputationWeight);
         reputation += u.AnswerComments.Union(u.QuestionComments).Sum(x => CommentsCreatedReputationWeight);
@@ -36,9 +33,6 @@ public static class VoteUtil
     public static decimal CalculateQuestionPopularity(Question q)
     {
         decimal popularity = 0.0m;
-
-        popularity += q.QuestionVotes.Select(v => v.IsUpVote ? QuestionCreatedUpVoteReputationWeight : QuestionCreatedDownVoteReputationWeight).Sum();
-        popularity += q.Answers.SelectMany(a => a.AnswerVotes).Select(v => v.IsUpVote ? AnswerCreatedUpVoteReputationWeight : AnswerCreatedDownVoteReputationWeight).Sum();
 
         return popularity;
     }

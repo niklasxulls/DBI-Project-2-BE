@@ -22,8 +22,6 @@ namespace stackblob.Infrastructure.Persistence.Configurations
                    .ValueGeneratedOnAdd()
                    .HasValueGenerator<GuidValueGenerator>();
 
-            builder.Ignore(q => q.Popularity);
-
             builder.Property(r => r.Title).IsRequired().HasMaxLength(150);
             builder.Property(r => r.Description).IsRequired().HasMaxLength(10000);
 
@@ -38,9 +36,7 @@ namespace stackblob.Infrastructure.Persistence.Configurations
                     .OnDelete(DeleteBehavior.Restrict);
 
 
-            builder.HasMany(u => u.QuestionVotes).WithOne(r => r.Question);
             builder.HasMany(u => u.Tags).WithMany(r => r.Questions);
-            builder.HasMany(u => u.Attachments).WithOne(r => r.Question);
             builder.HasMany(u => u.Answers).WithOne(r => r.Question);
         }
     }

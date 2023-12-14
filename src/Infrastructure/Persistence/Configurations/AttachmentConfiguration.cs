@@ -26,9 +26,5 @@ public class AttachmentConfiguration : IEntityTypeConfiguration<Attachment>
         builder.HasOne(a => a.Answer)
                .WithMany(a => a.Attachments)
                .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(a => a.Question)
-               .WithMany(a => a.Attachments)
-               .OnDelete(DeleteBehavior.Restrict);
     }
 }

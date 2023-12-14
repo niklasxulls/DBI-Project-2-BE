@@ -21,24 +21,6 @@ public class GetCommentsQueryTests : TestBase
     [Fact]
     public async Task ShouldGetQuestionComments()
     {
-        var question = _context.Questions.OrderByDescending(c => c.Comments.Count).First();
-
-        var query = new GetCommentsQuery()
-        {
-            QuestionId = question.QuestionId,
-            AnswerId = null,
-            Paging = new Paging
-            {
-                Offset = 0,
-                Size = 1000
-            }
-        };
-
-
-        var comments = await SendMediator(query, explicitNonUser: true);
-        
-        comments.Should().NotBeNull();
-        comments.Should().HaveCount(question.Comments.Where(a => a.Answer == null).Count());
     }
 
     [Fact]

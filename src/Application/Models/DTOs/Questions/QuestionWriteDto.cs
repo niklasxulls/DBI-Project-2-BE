@@ -13,10 +13,6 @@ public class QuestionWriteDto : QuestionBaseDto, IMapFrom<Question>
     public ICollection<Tag>? Tags { get; set; }
 
     public void Mapping(Profile p) {
-        p.CreateMap<Question, QuestionWriteDto>()
-            .ReverseMap()
-            .ForMember(q => q.Attachments, src => src.Ignore())
-            ;
     }
 
 }

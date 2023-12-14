@@ -74,15 +74,13 @@ public class SearchQuestionQueryHandler : IRequestHandler<GetQuestionsQuery, ICo
         {
             case SearchQuestionsOrderBy.Newest: query = query.OrderByDescending(q => q.CreatedAt); break;
             case SearchQuestionsOrderBy.Oldest: query = query.OrderBy(q => q.CreatedAt); break;
-            case SearchQuestionsOrderBy.Popularity: query = query.Include(q => q.Answers).Include(q => q.QuestionVotes); break;
         }
 
 
         // TODO write custom expression tree in oder to evaluate question popularity on db level
         if(request.OrderBy == SearchQuestionsOrderBy.Popularity)
         {
-            var questions = (await query.ToListAsync(cancellationToken)).OrderByDescending(q => q.Popularity).ToList().Skip(request.Paging.Offset).Take(request.Paging.Size);
-            return _mapper.Map<List<QuestionReadShallowDto>>(questions);
+            return null!;
         } else
         {
             return await query.Skip(request.Paging.Offset)

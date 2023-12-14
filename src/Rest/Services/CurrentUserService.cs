@@ -1,4 +1,5 @@
-﻿using stackblob.Application.Interfaces.Services;
+﻿using MongoDB.Bson;
+using stackblob.Application.Interfaces.Services;
 using stackblob.Domain.Settings;
 using stackblob.Domain.ValueObjects;
 using System.Security.Claims;
@@ -9,13 +10,13 @@ namespace stackblob.Rest.Services
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private int? _userId;
-        public int? UserId { 
+        private ObjectId? _userId;
+        public ObjectId? UserId { 
             get {
                 if(_userId == null)
                 {
                     var claimVal = _httpContextAccessor.HttpContext?.User?.FindFirstValue(AuthClaimSettings.USERID_CLAIM_NAME);
-                    _userId =  claimVal == null ? null : int.Parse(claimVal);
+                    _userId =  claimVal == null ? null : ObjectId.Empty;
                 }
                 return _userId;
             } 

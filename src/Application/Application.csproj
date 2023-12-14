@@ -41,4 +41,8 @@
         <Compile Include="..\Domain\GlobalUsings.cs"></Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="UseCases\" />
+    </ItemGroup>
+
 </Project>

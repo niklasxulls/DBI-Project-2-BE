@@ -64,6 +64,12 @@ public static class InfrastructureExtension
 
         services.Configure<AppConfig>(configuration);
 
+        if(configuration.GetValue<bool>("IsMongoDb"))
+        {
+            GlobalUtil.IsMongoDb = true;
+        }
+
+
 
         /*
         * Logging 

@@ -1,4 +1,5 @@
-﻿using stackblob.Domain.Entities;
+﻿using MongoDB.Bson;
+using stackblob.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,7 +19,7 @@ public class User : BaseEntity
         QuestionsCreated = new List<Question>();
     }
 
-    public int UserId { get; set; }
+    public ObjectId UserId { get; set; }
     public string Firstname { get; set; } = string.Empty;
     public string Lastname { get; set; } = string.Empty;
     public string Name => Firstname + " " + Lastname;

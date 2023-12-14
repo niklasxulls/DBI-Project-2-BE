@@ -18,6 +18,7 @@ using MediatR;
 using Respawn;
 using stackblob.Application.Interfaces.Services;
 using stackblob.Domain.ValueObjects;
+using MongoDB.Bson;
 
 namespace Application.IntegrationTests;
 
@@ -25,9 +26,9 @@ public class SetupFixture : IDisposable
 {
     private readonly IConfigurationRoot _configuration;
     public IServiceScopeFactory _scopeFactory;
-    private int _currentUserId = 0;
+    private ObjectId _currentUserId = ObjectId.Empty;
 
-    public int CurrentUserId
+    public ObjectId CurrentUserId
     {
         set { _currentUserId = value; } 
         get { return _currentUserId; } 

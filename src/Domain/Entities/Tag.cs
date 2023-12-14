@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace stackblob.Domain.Entities.Lookup;
 
@@ -12,7 +13,7 @@ public class Tag
     {
         Questions = new List<Question>();
     }
-    public int TagId { get; set; }
+    public ObjectId TagId { get; set; }
     public string Name { get; set; } = string.Empty;
     public ICollection<Question> Questions { get; set; }
 }

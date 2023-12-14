@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.EntityFrameworkCore.Extensions;
+using stackblob.Domain.Settings;
 
 namespace stackblob.Infrastructure.Persistence.Configurations;
 
@@ -13,27 +15,33 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
 { 
     public void Configure(EntityTypeBuilder<Answer> builder)
     {
-        builder.HasKey(r => r.AnswerId);
-        builder.Property(r => r.AnswerId).UseIdentityColumn();
+        if (GlobalUtil.IsMongoDb)
+        {
+            builder.ToCollection("ANSWER");
+        }
+        else
+        {
+            builder.ToTable("ANSWER");
+
 
         builder.Property(a => a.Title).HasMaxLength(50);
         builder.Property(a => a.Description).HasMaxLength(10000);
 
 
+        builder.Property(r => r.AnswerId).UseIdentityColumn();
+        }
+
         builder.HasOne(v => v.CorrectAnswerQuestion)
                .WithOne(q => q.CorrectAnswer)
-               .HasForeignKey<Question>(q => q.CorrectAnswerId)
-               .OnDelete(DeleteBehavior.Restrict);
+               .HasForeignKey<Question>(q => q.CorrectAnswerId);
 
         builder.HasOne(v => v.Question)
-               .WithMany(q => q.Answers)
-               .OnDelete(DeleteBehavior.Restrict);
+               .WithMany(q => q.Answers);
 
         builder.HasOne(v => v.CreatedBy)
-               .WithMany(u => u.Answers)
-               .OnDelete(DeleteBehavior.SetNull);
+               .WithMany(u => u.Answers);
 
-
+        builder.HasKey(r => r.AnswerId);
 
 
     }

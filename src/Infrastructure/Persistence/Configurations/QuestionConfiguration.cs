@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
+using stackblob.Domain.Settings;
+using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace stackblob.Infrastructure.Persistence.Configurations
 {
@@ -14,30 +16,39 @@ namespace stackblob.Infrastructure.Persistence.Configurations
     { 
         public void Configure(EntityTypeBuilder<Question> builder)
         {
-            builder.HasKey(r => r.QuestionId);
-            builder.Property(r => r.QuestionId).UseIdentityColumn();
+            if(GlobalUtil.IsMongoDb)
+            {
+                builder.ToCollection("QUESTION");
+            } else
+            {
+                builder.ToTable("QUESTION");
+                builder.Property(r => r.QuestionId).UseIdentityColumn();
+         
+                builder.HasIndex(r => r.QuestionIdAccess).IsUnique();
+                builder.Property(r => r.QuestionIdAccess)
+                       .ValueGeneratedOnAdd()
+                       .HasValueGenerator<GuidValueGenerator>();
 
-            builder.HasIndex(r => r.QuestionIdAccess).IsUnique();
-            builder.Property(r => r.QuestionIdAccess)
-                   .ValueGeneratedOnAdd()
-                   .HasValueGenerator<GuidValueGenerator>();
+                builder.Property(r => r.Title).IsRequired().HasMaxLength(150);
+                builder.Property(r => r.Description).IsRequired().HasMaxLength(10000);
 
-            builder.Property(r => r.Title).IsRequired().HasMaxLength(150);
-            builder.Property(r => r.Description).IsRequired().HasMaxLength(10000);
+              
+
+
+                builder.HasMany(u => u.Tags).WithMany(r => r.Questions);
+                builder.HasMany(u => u.Answers).WithOne(r => r.Question);
+            }
 
             builder.HasOne(r => r.CorrectAnswer)
-                   .WithOne(r => r.CorrectAnswerQuestion)
-                   .HasForeignKey<Answer>(q => q.CorrectAnswerQuestionId)
-                   .OnDelete(DeleteBehavior.SetNull);
+                     .WithOne(r => r.CorrectAnswerQuestion)
+                     .HasForeignKey<Answer>(q => q.CorrectAnswerQuestionId);
 
             builder.HasOne(r => r.CreatedBy)
                     .WithMany(r => r.QuestionsCreated)
-                    .HasForeignKey(q => q.CreatedById)
-                    .OnDelete(DeleteBehavior.Restrict);
+                    .HasForeignKey(q => q.CreatedById);
 
+            builder.HasKey(r => r.QuestionId);
 
-            builder.HasMany(u => u.Tags).WithMany(r => r.Questions);
-            builder.HasMany(u => u.Answers).WithOne(r => r.Question);
         }
     }
 }

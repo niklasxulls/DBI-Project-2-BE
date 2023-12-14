@@ -19,6 +19,7 @@ using Bogus;
 using NuGet.Packaging;
 using stackblob.Domain.Util;
 using stackblob.Infrastructure.Util;
+using MongoDB.Bson;
 
 namespace Application.IntegrationTests;
 
@@ -29,7 +30,7 @@ public class TestBase : IAsyncLifetime
     protected readonly IServiceScope _scope;
     protected readonly StackblobDbContext _context;
     protected readonly IMapper _mapper;
-    protected Dictionary<int, string> UserPasswords = new();
+    protected Dictionary<ObjectId, string> UserPasswords = new();
     private User _defaultUser;
     public User DefaultUser
     { 
@@ -56,7 +57,7 @@ public class TestBase : IAsyncLifetime
 
     public async Task<TResponse> SendMediator<TResponse>(IRequest<TResponse> request, User? u = null, bool explicitNonUser = false, bool userIsNotVerified = false)
     {
-        _setup.CurrentUserId = u == null && !explicitNonUser ? DefaultUser?.UserId ?? 0 : u?.UserId ?? 0;
+        _setup.CurrentUserId = u == null && !explicitNonUser ? ObjectId.Empty : ObjectId.Empty;
         _setup.CurrentUserIsVerified = !explicitNonUser && !userIsNotVerified;
 
         var mediator = _scope.ServiceProvider.GetRequiredService<ISender>();

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+        .wrapper {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: rgba(213, 213, 213, 0.558);
+        }
+
+        .imp {
+            font-weight: 600;
+        }
+
+        .container {
+            height: 370px;
+            width: 410px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            border-radius: 10px;
+            padding: 3rem 2.5rem;
+        }
+
+
+
+
+        .accept {
+            font-size: 15px;
+            background-color: #09446a;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            min-width: 125px;
+            padding: 0.5rem 8rem;
+            margin-left: 1rem;
+            margin-top: 2rem;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+        }
+
+            .accept:hover {
+                background-color: #083d60;
+                color: rgba(255, 255, 255, .789);
+                cursor: pointer;
+            }
+
+        .spacer {
+            height: 1rem;
+        }
+    </style>
+</head>
+
+<div class="wrapper">
+    <table class="container">
+        <tbody>
+            <tr>
+                <td>
+
+                    <div class="interaction-block">
+                        <div>
+                            <div>
+                                <div class="imp">Hey {{Receiver}},</div>
+                            </div>
+                            <br><br>
+                            <div>
+                                You received this mail due to your registration on Stackblob.
+                                <br><br>
+                                Please verify your email address by clicking the button below.
+                                <br><br>
+                                We are looking forward to see you soon on our platform &nbsp;&nbsp;&nbsp;&#128640;
+                                <br><br><br>
+                                Your Stackblob Team
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="accept">
+                        <a  style="width: 50%; color: white; text-decoration: none" href="www.x-bs.at" target="_blank">Verify</a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</html>

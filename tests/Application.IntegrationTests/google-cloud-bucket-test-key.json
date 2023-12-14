@@ -1,0 +1,12 @@
+﻿{
+  "type": "service_account",
+  "project_id": "stackblob",
+  "private_key_id": "5ea9f154cc16a3398aa0f310cb6b1b699deeed7e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCGi0UGrX11rwoh\nxxo1tmc8Vpd3SxIrCWWFqt8SWam04+Ck85LIEMbNtKmndMhXNRUfh4EaoABwih+Q\n7ILKSAbKzxne2c486uo8Y8r5F0AdWpN82Po7MZ56x3NuRgBk5xC6oVxy2J8TZ1nM\n8c8zxsp0r4UiZCJDbSHHbM8gN7FYh52Fc8WuvHXghUNZwiqOMKt32EUuAKfJcAmM\nLPBlhtTBtgcQxrZTFS32mqeNlGicWvZEbLer4UUiMdPAYqgcOqBA721w/DV/HPbH\n/Mt8WLyeUJOPohjZtrJaVL0aKYtOK5psWjbRrUdxmPVzAByJyVA5hhT9guI/HsUk\nYKmMAyLBAgMBAAECggEAIEHGsFWq9SqcusFyCrurH5/BG8Q/XFsZ4IS5i7w8gFZ8\nFwAgyl+fUlVEsZXBrIrZACCsNtZylIjBDa1upBHFsx0ZHkFI/Xjy5LymPrcw03jS\nUIXy5Hs+fEBSb/dPg+GUNLKYKB7AcNYABS9aVpcMFhK40CiCwHirNxViyV4g4lD0\nWN3pUFCcul3jF+AI5KNnAhw6M7rX43VjK2Ox1jtimVlnOQ+XdkqY0SZh3Kz6zMI2\nLmm45lL4sy1VRfSntaLveE6VLG6fPkpWM5RaUXnzjIYC5o5ruQBJpSiE+XJsz15o\nrTcQXQycriU9MCm22Q1v7xNJudvouqXV40myYx/X2QKBgQC6F7xGxhro+hGY63mW\nooQMQ/sThumubRhVkYo3XAfM60jlhrGAiZ99zjq5FnlJxafyPowNtEmUDsKPsAcO\nm2a619GEbGdffoT8CCaTB74jRa9Exze5x7zI2GDQxI9I5Aq+FuE1iVoV8llYvBA9\nhD7i/JjJ6NC2gynrZ8vPraDIFQKBgQC5FivrvZx5eK+Ekf7CU+Tvd/rwf6cCHw2J\nS6+p6RQBl/niDA2gHYuyp5XaKd1SijRfgTk32ADDaTcpnbTySS+CMzYdClo0Hm68\nCCB8DpMBlF3VH6yfD7HvvZC7DrbjyAteqnGTAMzW6cva1RSHm0yUYZLplSND/kI/\nq5hJNUtO/QKBgBFa5VQ0ZY4UxE9epphFz8rVDDVl/6Ukx4AzcpB3JMMXrlS5mxRB\nwX4aHZ/lWKpopKES9DzS84m7VqnP4Nib5ZjHR+LxuTJOulhG6lIMBs+DUDU53xiU\naCbTBzRxIGvL2LShrZ8wkBY749lCsMEL9FF2/UjXTZ+329D4fSmBJ92BAoGAfQOW\nwvIdgIadtuONueBEn+LgYhU2zt3+nJ+8lP1TgAgQxjfx9BZAx3keZG8miJvE6EU2\nSpvhWBv3IGrfT09TgZPplw/pAY8UqHisyF5nuQdnoY51YDKPsyjNWyuDKLNzyotB\nj1NZCEh+Yt7NsRKaVRbazl7npQNV5/+VKs2OglkCgYBLl9SCpNXBK5V8ExDAbCbM\nhu0zb8IUn/OrkJkwNPPwOxr2YunojtjVo25qd/IfTd/FFPt5p/tzwd/abLTA/LA0\nCG/WyyB1jGXiyXytE7w9dR9qMxnUCqKrFShf4E99AE449ICkB6UhG53Zzcuc+imt\nIzEdMJtsOrPkWN1wfMZkSg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "stackblob-test@stackblob.iam.gserviceaccount.com",
+  "client_id": "117659157884312525149",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/stackblob-test%40stackblob.iam.gserviceaccount.com"
+}

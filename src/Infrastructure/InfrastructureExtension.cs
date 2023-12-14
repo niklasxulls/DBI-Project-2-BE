@@ -15,6 +15,9 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Azure.Storage.Blobs;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace stackblob.Infrastructure;
 
@@ -28,20 +31,31 @@ public static class InfrastructureExtension
         /*
         *  Configure EF
         */
-        if (configuration.GetValue<bool>("UseInMemoryDatabase"))
+
+        var connectionString = "";
+#if DEBUG
+        connectionString = configuration.GetConnectionString("DevConnection");
+#else
+        connectionString = configuration.GetConnectionString("DefaultConnection");
+#endif
+
+        if (configuration.GetValue<bool>("UseMongoDB"))
         {
+            var databaseName = configuration.GetConnectionString("DBName");
+
             services.AddDbContext<StackblobDbContext>(options =>
-               options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
+               options.UseMongoDB(
+                   connectionString,
+                   databaseName,
+                   null
+                )
+               );
         }
         else
         {
             services.AddDbContext<StackblobDbContext>(options =>
                 options.UseSqlServer(
-#if DEBUG
-                    configuration.GetConnectionString("DevConnection"),
-#else
-                    configuration.GetConnectionString("DefaultConnection"),
-#endif
+                    connectionString,
                     b => b.MigrationsAssembly(typeof(StackblobDbContext).Assembly.FullName))
                 );
         }
@@ -59,6 +73,10 @@ public static class InfrastructureExtension
         });
 
         services.AddTransient(typeof(ILoggerService<>), typeof(LoggerService<>));
+
+
+        var connectionStrs = configuration.GetSection("ConnectionStrings");
+        services.Configure<ConnectionStringOptions>(connectionStrs);
 
 
         /*

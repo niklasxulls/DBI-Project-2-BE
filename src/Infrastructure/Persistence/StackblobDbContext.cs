@@ -9,11 +9,15 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using stackblob.Application.Interfaces.Services;
+using Microsoft.Extensions.Options;
+using stackblob.Domain.Settings;
+using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace stackblob.Infrastructure.Persistence;
 
 public class StackblobDbContext : DbContext, IStackblobDbContext
 {
+    private readonly IOptions<ConnectionStringOptions> _connectionStringOptions;
     private readonly ICurrentUserService _currentUser;
 
     public DbSet<User> Users { get; set; } = null!;
@@ -33,9 +37,10 @@ public class StackblobDbContext : DbContext, IStackblobDbContext
     public DbSet<Domain.Entities.Lookup.TimeZone> TimeZones { get; set; } = null!;
     public DbSet<UserEmailVerification> UserEmailVerifications { get; set; }
 
-    public StackblobDbContext(DbContextOptions<StackblobDbContext> options, ICurrentUserService currentUser) : base(options)
+    public StackblobDbContext(DbContextOptions<StackblobDbContext> options, IOptions<ConnectionStringOptions> connectionStringOptions, ICurrentUserService currentUser) : base(options)
 
     {
+        _connectionStringOptions = connectionStringOptions;
         //, ICurrentUserService currentUser
         _currentUser = currentUser;
     }
@@ -72,7 +77,6 @@ public class StackblobDbContext : DbContext, IStackblobDbContext
         var assembly = Assembly.GetExecutingAssembly();
 
         builder.ApplyConfigurationsFromAssembly(assembly);
-
 
         base.OnModelCreating(builder);
     }

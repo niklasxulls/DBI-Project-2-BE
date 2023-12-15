@@ -21,6 +21,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         if (GlobalUtil.IsMongoDb)
         {
             builder.ToCollection("USER");
+
+            builder.HasKey(a => a.UserId);
         }
         else
         {

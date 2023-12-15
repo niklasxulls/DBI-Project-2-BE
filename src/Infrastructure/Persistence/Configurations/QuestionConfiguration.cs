@@ -19,6 +19,8 @@ namespace stackblob.Infrastructure.Persistence.Configurations
             if(GlobalUtil.IsMongoDb)
             {
                 builder.ToCollection("QUESTION");
+
+                builder.HasKey(a => a.QuestionId);
             } else
             {
                 builder.ToTable("QUESTION");
@@ -35,19 +37,19 @@ namespace stackblob.Infrastructure.Persistence.Configurations
               
 
 
-                builder.HasMany(u => u.Tags).WithMany(r => r.Questions);
-                builder.HasMany(u => u.Answers).WithOne(r => r.Question);
+                //builder.HasMany(u => u.Tags).WithMany(r => r.Questions);
+                //builder.HasMany(u => u.Answers).WithOne(r => r.Question);
             }
 
-            builder.HasOne(r => r.CorrectAnswer)
-                     .WithOne(r => r.CorrectAnswerQuestion)
-                     .HasForeignKey<Answer>(q => q.CorrectAnswerQuestionId);
+            //builder.HasOne(r => r.CorrectAnswer)
+            //         .WithOne(r => r.CorrectAnswerQuestion)
+            //         .HasForeignKey<Answer>(q => q.CorrectAnswerQuestionId);
 
-            builder.HasOne(r => r.CreatedBy)
-                    .WithMany(r => r.QuestionsCreated)
-                    .HasForeignKey(q => q.CreatedById);
+            //builder.HasOne(r => r.CreatedBy)
+            //        .WithMany(r => r.QuestionsCreated)
+            //        .HasForeignKey(q => q.CreatedById);
 
-            builder.HasKey(r => r.QuestionId);
+            //builder.HasKey(r => r.QuestionId);
 
         }
     }

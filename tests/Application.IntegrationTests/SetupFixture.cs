@@ -19,6 +19,7 @@ using Respawn;
 using stackblob.Application.Interfaces.Services;
 using stackblob.Domain.ValueObjects;
 using MongoDB.Bson;
+using stackblob.Domain.Settings;
 
 namespace Application.IntegrationTests;
 
@@ -107,7 +108,10 @@ public class SetupFixture : IDisposable
         using var scope = _scopeFactory.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<StackblobDbContext>();
 
-        context.Database.EnsureCreated();
+        if(!GlobalUtil.IsMongoDb)
+        {
+            context.Database.EnsureCreated();
+        }
     }
 
     public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)

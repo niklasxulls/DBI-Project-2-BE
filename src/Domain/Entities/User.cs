@@ -14,9 +14,9 @@ public class User : BaseEntity
 {
     public User()
     {
-        Answers = new List<Answer>();
-        Question = new List<Question>();
-        QuestionsCreated = new List<Question>();
+        //Answers = new List<Answer>();
+        //Question = new List<Question>();
+        //QuestionsCreated = new List<Question>();
     }
 
     public ObjectId UserId { get; set; }
@@ -27,7 +27,7 @@ public class User : BaseEntity
     public string Password { get; set; } = string.Empty;
     public string Salt { get; set; } = string.Empty;
     public string? StatusText { get; set; }
-    public ICollection<Question> Question { get; set; }
-    public ICollection<Question> QuestionsCreated { get; set; }
-    public ICollection<Answer> Answers { get; set; }
+    //public ICollection<Question> Question { get; set; }
+    //public ICollection<Question> QuestionsCreated { get; set; }
+    //public ICollection<Answer> Answers { get; set; }
 }

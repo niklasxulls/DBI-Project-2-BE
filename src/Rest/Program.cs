@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using stackblob.Domain.Settings;
 
 namespace Rest
 {
@@ -27,7 +28,10 @@ namespace Rest
                 {
                     var context = services.GetRequiredService<StackblobDbContext>();
 
-                    context.Database.EnsureCreated();
+                    if(!GlobalUtil.IsMongoDb)
+                    {
+                        context.Database.EnsureCreated();
+                    }
 
                     await StackblobDbContextSeed.SeedSampleData(context);
                 }

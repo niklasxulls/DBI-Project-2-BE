@@ -18,6 +18,8 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
         if (GlobalUtil.IsMongoDb)
         {
             builder.ToCollection("ANSWER");
+
+            builder.HasKey(a => a.AnswerId);
         }
         else
         {
@@ -31,15 +33,15 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
         builder.Property(r => r.AnswerId).UseIdentityColumn();
         }
 
-        builder.HasOne(v => v.CorrectAnswerQuestion)
-               .WithOne(q => q.CorrectAnswer)
-               .HasForeignKey<Question>(q => q.CorrectAnswerId);
+        //builder.HasOne(v => v.CorrectAnswerQuestion)
+        //       .WithOne(q => q.CorrectAnswer)
+        //       .HasForeignKey<Question>(q => q.CorrectAnswerId);
 
-        builder.HasOne(v => v.Question)
-               .WithMany(q => q.Answers);
+        //builder.HasOne(v => v.Question)
+        //       .WithMany(q => q.Answers);
 
-        builder.HasOne(v => v.CreatedBy)
-               .WithMany(u => u.Answers);
+        //builder.HasOne(v => v.CreatedBy)
+        //       .WithMany(u => u.Answers);
 
         builder.HasKey(r => r.AnswerId);
 

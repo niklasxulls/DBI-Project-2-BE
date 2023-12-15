@@ -20,6 +20,7 @@ using NuGet.Packaging;
 using stackblob.Domain.Util;
 using stackblob.Infrastructure.Util;
 using MongoDB.Bson;
+using stackblob.Domain.Settings;
 
 namespace Application.IntegrationTests;
 
@@ -51,8 +52,12 @@ public class TestBase : IAsyncLifetime
         _scope = _setup._scopeFactory.CreateScope();
         _context = _scope.ServiceProvider.GetRequiredService<StackblobDbContext>();
         _mapper = _scope.ServiceProvider.GetRequiredService<IMapper>();
-        _context.Database.EnsureDeleted();
-        _context.Database.EnsureCreated();
+        
+        if(!GlobalUtil.IsMongoDb)
+        {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+        }
     }
 
     public async Task<TResponse> SendMediator<TResponse>(IRequest<TResponse> request, User? u = null, bool explicitNonUser = false, bool userIsNotVerified = false)
@@ -143,40 +148,40 @@ public class TestBase : IAsyncLifetime
                 //    CreateByInQuestionId = u.UserId
                 //}).ToList();
                 //s.CorrectAnswer = new Random().Next(1, 100) < 55 ? s.Answers.ToArray()[new Random().Next(0, s.Answers.Count)] : null;
-                s.Tags = f.PickRandom(tagPool, new Random().Next(1, 5)).ToList();
+                //s.Tags = f.PickRandom(tagPool, new Random().Next(1, 5)).ToList();
             });
 
-        foreach (var user in usersPool)
-        {
-            var questions = questionFaker.Generate(2);
-            foreach(var question in questions) { question.CreatedBy = user; };
-            user.Question.AddRange(questions);
-        }
+        //foreach (var user in usersPool)
+        //{
+        //    var questions = questionFaker.Generate(2);
+        //    foreach(var question in questions) { question.CreatedBy = user; };
+        //    user.Question.AddRange(questions);
+        //}
         _context.SaveChanges();
 
-        var noCorrectAnswers = _context.Users.Select(q => q.Question.First().QuestionId).ToList();
+        //var noCorrectAnswers = _context.Users.Select(q => q.Question.First().QuestionId).ToList();
 
-        foreach(var user in usersPool)
-        {
-            var answers = answerFaker.Generate(3);
-            user.Answers.AddRange(answers);
+        //foreach(var user in usersPool)
+        //{
+        //    var answers = answerFaker.Generate(3);
+        //    user.Answers.AddRange(answers);
 
-            var questions = _context.Questions.Where(q => q.CreatedById != user.UserId).OrderBy(q => q.Answers.Count).Take(3).ToList();
+        //    var questions = _context.Questions.Where(q => q.CreatedById != user.UserXId).OrderBy(q => q.Answers.Count).Take(3).ToList();
 
 
-            bool hasCorrectQuestion = false;
+        //    bool hasCorrectQuestion = false;
             
-            for(int i=0; i<questions.Count; i++)
-            {
-                questions[i].Answers.Add(answers[i]);
+        //    for(int i=0; i<questions.Count; i++)
+        //    {
+        //        questions[i].Answers.Add(answers[i]);
 
-                if (!hasCorrectQuestion && !noCorrectAnswers.Contains(questions[i].QuestionId) && questions[i].CorrectAnswer == null) {
-                    questions[i].CorrectAnswer = answers[i];
-                    hasCorrectQuestion = true;
-                }
-            }
-            _context.SaveChanges();
-        }
+        //        if (!hasCorrectQuestion && !noCorrectAnswers.Contains(questions[i].QuestionId) && questions[i].CorrectAnswer == null) {
+        //            questions[i].CorrectAnswer = answers[i];
+        //            hasCorrectQuestion = true;
+        //        }
+        //    }
+        //    _context.SaveChanges();
+        //}
 
         _context.SaveChanges();
 

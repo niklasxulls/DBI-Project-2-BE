@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
-using stackblob.Application.Models.DTOs.Answers;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace stackblob.Rest.Swagger;
@@ -63,8 +62,6 @@ public static class SwaggerExtension
     public static void AddDtosToSwagger(this SwaggerGenOptions c)
     {
 
-        c.DocumentFilter<CustomModelDocumentFilter<AnswerReadDto>>();
-        c.DocumentFilter<CustomModelDocumentFilter<AnswerWriteDto>>();
     }
 
     public static void AddQueriesToSwagger(this SwaggerGenOptions c)

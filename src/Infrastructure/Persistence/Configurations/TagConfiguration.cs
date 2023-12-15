@@ -17,6 +17,8 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
         if (GlobalUtil.IsMongoDb)
         {
             builder.ToCollection("TAG");
+
+            builder.HasKey(a => a.TagId);
         }
         else
         {
@@ -24,8 +26,8 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
         builder.Property(r => r.Name).HasMaxLength(50).IsRequired();
 
 
-        builder.HasMany(r => r.Questions)
-               .WithMany(r => r.Tags);
+        //builder.HasMany(r => r.Questions)
+        //       .WithMany(r => r.Tags);
         builder.Property(r => r.TagId).HasConversion<int>();
         }
 

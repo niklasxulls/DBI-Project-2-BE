@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.EntityFrameworkCore.Extensions;
 using stackblob.Domain.Settings;
+using stackblob.Infrastructure.Persistence.Configurations._Base;
 
 namespace stackblob.Infrastructure.Persistence.Configurations;
 
@@ -23,6 +24,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             builder.ToCollection("USER");
 
             builder.HasKey(a => a.UserId);
+
+            builder.Property(a => a.UserId)
+                   .HasValueGenerator<MongoDbValueGenerator>()
+                   .HasConversion<MongoDbValueConverter>()
+                   .ValueGeneratedNever();
         }
         else
         {

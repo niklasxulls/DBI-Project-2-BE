@@ -13,9 +13,9 @@ public class Question
     public Question()
     {
         //Tags = new List<Tag>();
-        //Answers = new List<Answer>();
+        Answers = new List<Answer>();
     }
-    public ObjectId QuestionId { get; set; }
+    public string QuestionId { get; set; }
     public Guid QuestionIdAccess { get; set; }
 
     public string Title { get; set; } = string.Empty;
@@ -25,5 +25,5 @@ public class Question
     //public Answer? CorrectAnswer { get; set; }
 
     //public ICollection<Tag> Tags { get; set; }
-    //public ICollection<Answer> Answers { get; set; }
+    public ICollection<Answer> Answers { get; set; }
 }

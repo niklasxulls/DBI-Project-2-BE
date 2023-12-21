@@ -14,17 +14,20 @@ using Xunit;
 namespace stackblob.stackblob.Application.IntegrationTests.Questions.Queries;
 
 
-public class GenerateQuestionsTest : TestBase
+public class QuestionPerformanceTests : TestBase
 {
-    public GenerateQuestionsTest(SetupFixture setup) : base(setup)
+    public QuestionPerformanceTests(SetupFixture setup) : base(setup)
     {
     }
 
 
 
-    [Fact]
-    public async Task ShouldPageAnswers()
+    [Theory]
+    [InlineData(1000)]
+    [InlineData(10000)]
+    [InlineData(100000)]
+    [InlineData(1000000)]
+    public async Task ShouldTestPerformance(int size)
     {
-        true.Should().Be(true);
     }
 }

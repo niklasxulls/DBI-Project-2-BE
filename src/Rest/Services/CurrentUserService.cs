@@ -10,13 +10,13 @@ namespace stackblob.Rest.Services
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private ObjectId? _userId;
-        public ObjectId? UserId { 
+        private string? _userId;
+        public string? UserId { 
             get {
                 if(_userId == null)
                 {
                     var claimVal = _httpContextAccessor.HttpContext?.User?.FindFirstValue(AuthClaimSettings.USERID_CLAIM_NAME);
-                    _userId =  claimVal == null ? null : ObjectId.Empty;
+                    _userId =  claimVal == null ? null : "";
                 }
                 return _userId;
             } 

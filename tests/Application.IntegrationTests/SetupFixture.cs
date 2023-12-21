@@ -27,9 +27,9 @@ public class SetupFixture : IDisposable
 {
     private readonly IConfigurationRoot _configuration;
     public IServiceScopeFactory _scopeFactory;
-    private ObjectId _currentUserId = ObjectId.Empty;
+    private string _currentUserId = "";
 
-    public ObjectId CurrentUserId
+    public string CurrentUserId
     {
         set { _currentUserId = value; } 
         get { return _currentUserId; } 

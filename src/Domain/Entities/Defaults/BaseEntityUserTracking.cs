@@ -10,6 +10,6 @@ namespace stackblob.Domain.Entities.Defaults;
 public class BaseEntityUserTracking : BaseEntity
 {
     public User? CreatedBy { get; set; } = null!;
-    public ObjectId? CreatedById { get; set; }
+    public string? CreatedById { get; set; }
 
 }

@@ -31,7 +31,7 @@ public class TestBase : IAsyncLifetime
     protected readonly IServiceScope _scope;
     protected readonly StackblobDbContext _context;
     protected readonly IMapper _mapper;
-    protected Dictionary<ObjectId, string> UserPasswords = new();
+    protected Dictionary<string, string> UserPasswords = new();
     private User _defaultUser;
     public User DefaultUser
     { 
@@ -62,7 +62,7 @@ public class TestBase : IAsyncLifetime
 
     public async Task<TResponse> SendMediator<TResponse>(IRequest<TResponse> request, User? u = null, bool explicitNonUser = false, bool userIsNotVerified = false)
     {
-        _setup.CurrentUserId = u == null && !explicitNonUser ? ObjectId.Empty : ObjectId.Empty;
+        _setup.CurrentUserId = u == null && !explicitNonUser ? "" : "";
         _setup.CurrentUserIsVerified = !explicitNonUser && !userIsNotVerified;
 
         var mediator = _scope.ServiceProvider.GetRequiredService<ISender>();
@@ -95,12 +95,20 @@ public class TestBase : IAsyncLifetime
 
         foreach (var user in userFaker.Generate(20))
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            UserPasswords[user!.UserId] = user.Password;
-            user.Salt = CryptoUtil.CreateSalt();
-            user.Password = CryptoUtil.CreateHash(user.Salt + user.Password);
-            _context.SaveChanges();
+
+            try
+            {
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync(default);
+
+                UserPasswords[user!.UserId] = user.Password;
+                user.Salt = CryptoUtil.CreateSalt();
+                user.Password = CryptoUtil.CreateHash(user.Salt + user.Password);
+                _context.SaveChanges();
+            } catch(Exception e)
+            {
+                var x = 0;
+            }
         }
 
         DefaultUser = _context.Users.First();
@@ -140,8 +148,7 @@ public class TestBase : IAsyncLifetime
             {
                 s.Title = f.PickRandom(questionTitlePool);
                 s.Description = f.PickRandom(questionTitlePool);
-                //s.CreatedBy = f.PickRandom(_context.Users.ToList());
-                //s.Answers = answerFaker.GenerateBetween(1, 3).DistinctBy(a => a.CreatedById).ToList();
+                s.Answers = answerFaker.GenerateBetween(1, 3).ToList();
                 //s.QuestionVotes = f.PickRandom(usersPool, new Random().Next(1, usersPool.Count - 1)).DistinctBy(a => a.UserId).Select(u => new Vote()
                 //{
                 //    IsUpVote = new Random().Next(1, 4) < 70,
@@ -170,26 +177,27 @@ public class TestBase : IAsyncLifetime
 
 
         //    bool hasCorrectQuestion = false;
-            
-        //    for(int i=0; i<questions.Count; i++)
-        //    {
-        //        questions[i].Answers.Add(answers[i]);
 
-        //        if (!hasCorrectQuestion && !noCorrectAnswers.Contains(questions[i].QuestionId) && questions[i].CorrectAnswer == null) {
-        //            questions[i].CorrectAnswer = answers[i];
-        //            hasCorrectQuestion = true;
-        //        }
+        //for (int i = 0; i < questions.Count; i++)
+        //{
+        //    questions[i].Answers.Add(answers[i]);
+
+        //    if (!hasCorrectQuestion && !noCorrectAnswers.Contains(questions[i].QuestionId) && questions[i].CorrectAnswer == null)
+        //    {
+        //        questions[i].CorrectAnswer = answers[i];
+        //        hasCorrectQuestion = true;
         //    }
+        //}
         //    _context.SaveChanges();
         //}
 
         _context.SaveChanges();
 
-        //foreach (var question in questionFaker.Generate(20))
-        //{
-        //    _context.Questions.Add(question);
-        //}
-        //_context.SaveChanges();
+        foreach (var question in questionFaker.Generate(20))
+        {
+            _context.Questions.Add(question);
+            await _context.SaveChangesAsync(default);
+        }
 
         var quests = _context.Questions.ToList();
         #region Populate Tags DBContext Collection

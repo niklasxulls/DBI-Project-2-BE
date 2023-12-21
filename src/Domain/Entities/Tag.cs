@@ -13,7 +13,7 @@ public class Tag
     {
         //Questions = new List<Question>();
     }
-    public ObjectId TagId { get; set; }
+    public string TagId { get; set; }
     public string Name { get; set; } = string.Empty;
     //public ICollection<Question> Questions { get; set; }
 }

@@ -53,7 +53,7 @@ public class StackblobDbContext : DbContext, IStackblobDbContext
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedById = _currentUser.UserId.GetValueOrDefault();
+                entry.Entity.CreatedById = _currentUser.UserId;
             }
         }
 

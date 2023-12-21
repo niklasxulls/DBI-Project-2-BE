@@ -11,7 +11,7 @@ namespace stackblob.Application.Interfaces.Services;
 
 public interface ICurrentUserService
 {
-    ObjectId? UserId { get; }
+    string? UserId { get; }
     bool IsVerified { get; }
     IpAddress IpAddress { get; }
 }

@@ -19,7 +19,7 @@ public class User : BaseEntity
         //QuestionsCreated = new List<Question>();
     }
 
-    public ObjectId UserId { get; set; }
+    public string UserId { get; set; }
     public string Firstname { get; set; } = string.Empty;
     public string Lastname { get; set; } = string.Empty;
     public string Name => Firstname + " " + Lastname;

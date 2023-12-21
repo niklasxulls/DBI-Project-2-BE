@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using stackblob.Domain.Settings;
 using MongoDB.EntityFrameworkCore.Extensions;
+using stackblob.Infrastructure.Persistence.Configurations._Base;
 
 namespace stackblob.Infrastructure.Persistence.Configurations
 {
@@ -21,7 +22,14 @@ namespace stackblob.Infrastructure.Persistence.Configurations
                 builder.ToCollection("QUESTION");
 
                 builder.HasKey(a => a.QuestionId);
-            } else
+
+                builder.Property(a => a.QuestionId)
+                       .HasValueGenerator<MongoDbValueGenerator>()
+                       .HasConversion<MongoDbValueConverter>()
+                       .ValueGeneratedNever();
+
+            }
+            else
             {
                 builder.ToTable("QUESTION");
                 builder.Property(r => r.QuestionId).UseIdentityColumn();
@@ -34,11 +42,11 @@ namespace stackblob.Infrastructure.Persistence.Configurations
                 builder.Property(r => r.Title).IsRequired().HasMaxLength(150);
                 builder.Property(r => r.Description).IsRequired().HasMaxLength(10000);
 
-              
+
 
 
                 //builder.HasMany(u => u.Tags).WithMany(r => r.Questions);
-                //builder.HasMany(u => u.Answers).WithOne(r => r.Question);
+                builder.HasMany(u => u.Answers).WithOne(r => r.Question);
             }
 
             //builder.HasOne(r => r.CorrectAnswer)

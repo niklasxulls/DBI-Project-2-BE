@@ -93,7 +93,7 @@ public class TestBase : IAsyncLifetime
                 s.Title = f.PickRandom(questionTitlePool);
                 s.Description = f.PickRandom(questionTitlePool);
                 s.Answers = answerFaker.GenerateBetween(1, 3).ToList();
-                //s.CreatedBy = f.PickRandom(usersPool);
+                s.CreatedBy = f.PickRandom(usersPool);
 
                 var tags = f.PickRandom(tagPool, new Random().Next(1, 5)).ToList();
 

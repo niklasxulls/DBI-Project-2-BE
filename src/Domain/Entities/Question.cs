@@ -8,7 +8,7 @@ using MongoDB.Bson;
 
 namespace stackblob.Domain.Entities;
 
-public class Question
+public class Question : BaseEntityUserTracking
 {
     public Question()
     {

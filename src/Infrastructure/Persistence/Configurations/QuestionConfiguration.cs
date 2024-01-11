@@ -28,8 +28,8 @@ namespace stackblob.Infrastructure.Persistence.Configurations
                        .HasConversion<MongoDbValueConverter>()
                        .ValueGeneratedNever();
 
-                //builder.Property(a => a.CreatedById)
-                //       .HasConversion<MongoDbValueNullableConverter>();
+                builder.Property(a => a.CreatedById)
+                       .HasConversion<MongoDbValueNullableConverter>();
             }
             else
             {
@@ -43,9 +43,9 @@ namespace stackblob.Infrastructure.Persistence.Configurations
                 builder.Property(r => r.Description).IsRequired().HasMaxLength(10000);
             }
 
-            //builder.HasOne(a => a.CreatedBy)
-            //       .WithMany(a => a.QuestionsCreated)
-            //       .HasForeignKey(a => a.CreatedById);
+            builder.HasOne(a => a.CreatedBy)
+                   .WithMany(a => a.QuestionsCreated)
+                   .HasForeignKey(a => a.CreatedById);
 
             builder.HasMany(a => a.Tags)
                    .WithOne(a => a.Question)

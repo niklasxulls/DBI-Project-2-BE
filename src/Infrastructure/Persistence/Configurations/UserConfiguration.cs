@@ -49,6 +49,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
             builder.Ignore(u => u.Name);
         }
+
+        builder.HasMany(a => a.QuestionsCreated)
+               .WithOne(a => a.CreatedBy);
     }
 
 }

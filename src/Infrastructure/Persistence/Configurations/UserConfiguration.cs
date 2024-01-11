@@ -19,11 +19,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.HasKey(a => a.UserId);
+
         if (GlobalUtil.IsMongoDb)
         {
             builder.ToCollection("USER");
-
-            builder.HasKey(a => a.UserId);
 
             builder.Property(a => a.UserId)
                    .HasValueGenerator<MongoDbValueGenerator>()
@@ -33,7 +33,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         else
         {
             builder.ToTable("USER");
-            builder.Property(u => u.UserId).UseIdentityColumn();
+
+            builder.Property(u => u.UserId)
+                   .HasValueGenerator<SqlServerValueGenerator>()
+                   .ValueGeneratedNever();
 
             builder.Property(u => u.Firstname).IsRequired().HasMaxLength(50);
             builder.Property(u => u.Lastname).IsRequired().HasMaxLength(50);
@@ -46,10 +49,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
             builder.Ignore(u => u.Name);
         }
-
-        builder.HasKey(u => u.UserId);
-
-
     }
 
 }

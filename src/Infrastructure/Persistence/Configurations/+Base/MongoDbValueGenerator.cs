@@ -27,3 +27,11 @@ public class MongoDbValueConverter : ValueConverter<string, ObjectId>
     {
     }
 }
+
+public class MongoDbValueNullableConverter : ValueConverter<string?, ObjectId?>
+{
+    public MongoDbValueNullableConverter() :
+        base((x) => x == null ? null : ObjectId.Parse(x), (s) => s == null ? null : s.ToString())
+    {
+    }
+}

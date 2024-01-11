@@ -15,7 +15,7 @@ namespace stackblob.Application.Interfaces
         DbSet<Question> Questions { get; set; }
         DbSet<Answer> Answers { get; set; }
         DbSet<User> Users { get; set; }
-
+        //DbSet<MongoQuestion> MongoQuestions { get; set; }
 
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);

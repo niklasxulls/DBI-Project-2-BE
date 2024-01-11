@@ -15,12 +15,13 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
 {
     public void Configure(EntityTypeBuilder<Tag> builder)
     {
+        builder.HasKey(r => r.TagId);
+
         if (GlobalUtil.IsMongoDb)
         {
             builder.ToCollection("TAG");
 
             builder.HasKey(a => a.TagId);
-            builder.Property(a => a.TagId).HasValueGenerator<MongoDbValueGenerator>().ValueGeneratedNever();
 
 
             builder.Property(a => a.TagId)
@@ -32,14 +33,12 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
         else
         {
             builder.ToTable("TAG");
-        builder.Property(r => r.Name).HasMaxLength(50).IsRequired();
 
+            builder.Property(u => u.TagId)
+                   .HasValueGenerator<SqlServerValueGenerator>()
+                   .ValueGeneratedNever();
 
-        //builder.HasMany(r => r.Questions)
-        //       .WithMany(r => r.Tags);
-        builder.Property(r => r.TagId).HasConversion<int>();
+            builder.Property(r => r.Name).HasMaxLength(50).IsRequired();
         }
-
-        builder.HasKey(r => r.TagId);
     }
 }

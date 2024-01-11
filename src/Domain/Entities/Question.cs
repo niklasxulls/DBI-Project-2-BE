@@ -8,22 +8,19 @@ using MongoDB.Bson;
 
 namespace stackblob.Domain.Entities;
 
-public class Question 
+public class Question
 {
     public Question()
     {
-        //Tags = new List<Tag>();
-        Answers = new List<Answer>();
+        //Tags = new List<QuestionTag>();
+        //Answers = new List<Answer>();
     }
     public string QuestionId { get; set; }
-    public Guid QuestionIdAccess { get; set; }
 
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 
-    //public ObjectId? CorrectAnswerId { get; set; }
-    //public Answer? CorrectAnswer { get; set; }
 
-    //public ICollection<Tag> Tags { get; set; }
-    public ICollection<Answer> Answers { get; set; }
+    //public ICollection<QuestionTag> Tags { get; set; }
+    //public ICollection<Answer> Answers { get; set; }
 }

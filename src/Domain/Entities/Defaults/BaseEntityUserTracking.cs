@@ -11,5 +11,4 @@ public class BaseEntityUserTracking : BaseEntity
 {
     public User? CreatedBy { get; set; } = null!;
     public string? CreatedById { get; set; }
-
 }

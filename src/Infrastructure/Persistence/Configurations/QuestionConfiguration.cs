@@ -28,37 +28,27 @@ namespace stackblob.Infrastructure.Persistence.Configurations
                        .HasConversion<MongoDbValueConverter>()
                        .ValueGeneratedNever();
 
+                //builder.Property(a => a.CreatedById)
+                //       .HasConversion<MongoDbValueNullableConverter>();
             }
             else
             {
                 builder.ToTable("QUESTION");
-                builder.Property(r => r.QuestionId).UseIdentityColumn();
-         
-                builder.HasIndex(r => r.QuestionIdAccess).IsUnique();
-                builder.Property(r => r.QuestionIdAccess)
-                       .ValueGeneratedOnAdd()
-                       .HasValueGenerator<GuidValueGenerator>();
+
+                builder.Property(u => u.QuestionId)
+                       .HasValueGenerator<SqlServerValueGenerator>()
+                       .ValueGeneratedNever();
 
                 builder.Property(r => r.Title).IsRequired().HasMaxLength(150);
                 builder.Property(r => r.Description).IsRequired().HasMaxLength(10000);
-
-
-
-
-                //builder.HasMany(u => u.Tags).WithMany(r => r.Questions);
-                builder.HasMany(u => u.Answers).WithOne(r => r.Question);
             }
 
-            //builder.HasOne(r => r.CorrectAnswer)
-            //         .WithOne(r => r.CorrectAnswerQuestion)
-            //         .HasForeignKey<Answer>(q => q.CorrectAnswerQuestionId);
+            //builder.HasMany(u => u.Answers)
+            //       .WithOne(r => r.Question);
 
-            //builder.HasOne(r => r.CreatedBy)
-            //        .WithMany(r => r.QuestionsCreated)
-            //        .HasForeignKey(q => q.CreatedById);
-
-            //builder.HasKey(r => r.QuestionId);
-
+            //builder.HasOne(a => a.CreatedBy)
+            //       .WithMany(a => a.QuestionsCreated)
+            //       .HasForeignKey(a => a.CreatedById);
         }
     }
 }

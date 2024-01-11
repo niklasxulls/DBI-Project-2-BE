@@ -16,45 +16,41 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
 { 
     public void Configure(EntityTypeBuilder<Answer> builder)
     {
+        builder.HasKey(a => a.AnswerId);
+
         if (GlobalUtil.IsMongoDb)
         {
             builder.ToCollection("ANSWER");
-
-            builder.HasKey(a => a.AnswerId);
 
             builder.Property(a => a.AnswerId)
                    .HasValueGenerator<MongoDbValueGenerator>()
                    .HasConversion<MongoDbValueConverter>()
                    .ValueGeneratedNever();
 
-            builder.Property(a => a.QuestionId)
-                   .HasConversion<MongoDbValueConverter>();
+            //builder.Property(a => a.QuestionId)
+            //       .HasConversion<MongoDbValueConverter>();
 
+            //builder.Property(a => a.CreatedById)
+            //       .HasConversion<MongoDbValueNullableConverter>();
         }
         else
         {
             builder.ToTable("ANSWER");
 
+            builder.Property(u => u.AnswerId)
+                   .HasValueGenerator<SqlServerValueGenerator>()
+                   .ValueGeneratedNever();
 
             builder.Property(a => a.Title).HasMaxLength(50);
             builder.Property(a => a.Description).HasMaxLength(10000);
-
-
-            builder.Property(r => r.AnswerId).UseIdentityColumn();
         }
 
-        //builder.HasOne(v => v.CorrectAnswerQuestion)
-        //       .WithOne(q => q.CorrectAnswer)
-        //       .HasForeignKey<Question>(q => q.CorrectAnswerId);
 
-        builder.HasOne(v => v.Question)
-               .WithMany(q => q.Answers);
+        //builder.HasOne(v => v.Question)
+        //       .WithMany(q => q.Answers);
 
-        //builder.HasOne(v => v.CreatedBy)
-        //       .WithMany(u => u.Answers);
-
-        builder.HasKey(r => r.AnswerId);
-
-
+        //builder.HasOne(a => a.CreatedBy)
+        //    .WithMany(a => a.AnswersCreated)
+        //    .HasForeignKey(a => a.CreatedById);
     }
 }

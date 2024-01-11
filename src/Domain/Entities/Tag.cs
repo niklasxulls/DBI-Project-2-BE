@@ -11,9 +11,9 @@ public class Tag
 {
     public Tag()
     {
-        //Questions = new List<Question>();
+        //Questions = new List<QuestionTag>();
     }
     public string TagId { get; set; }
     public string Name { get; set; } = string.Empty;
-    //public ICollection<Question> Questions { get; set; }
+    //public ICollection<QuestionTag> Questions { get; set; }
 }

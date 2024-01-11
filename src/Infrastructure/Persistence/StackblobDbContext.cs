@@ -12,6 +12,7 @@ using stackblob.Application.Interfaces.Services;
 using Microsoft.Extensions.Options;
 using stackblob.Domain.Settings;
 using MongoDB.EntityFrameworkCore.Extensions;
+using System.Reflection.Emit;
 
 namespace stackblob.Infrastructure.Persistence;
 
@@ -24,6 +25,7 @@ public class StackblobDbContext : DbContext, IStackblobDbContext
     public DbSet<Question> Questions { get; set; } = null!;
     public DbSet<Answer> Answers { get; set; } = null!;
     public DbSet<User> Users { get; set; }
+    //public DbSet<MongoQuestion> MongoQuestions { get; set; }
 
     public StackblobDbContext(DbContextOptions<StackblobDbContext> options, IOptions<ConnectionStringOptions> connectionStringOptions, ICurrentUserService currentUser) : base(options)
 
@@ -64,7 +66,18 @@ public class StackblobDbContext : DbContext, IStackblobDbContext
     {
         var assembly = Assembly.GetExecutingAssembly();
 
+
+        //if(!GlobalUtil.IsMongoDb)
+        //{
+        //    builder.Ignore<MongoQuestion>();
+        //    builder.Entity<MongoQuestion>().ToTable(nameof(MongoQuestion), t => t.ExcludeFromMigrations());
+        //}
+
+        //builder.Ignore<MongoAnswer>();
+        //builder.Entity<MongoAnswer>().ToTable(nameof(MongoAnswer), t => t.ExcludeFromMigrations());
+
         builder.ApplyConfigurationsFromAssembly(assembly);
+
 
         base.OnModelCreating(builder);
     }

@@ -8,4 +8,6 @@ namespace stackblob.Domain.Settings;
 public static class GlobalUtil
 {
     public static bool IsMongoDb { get; set; }
+    public static string MongoDbName { get; set; }
+    public static string ConnectionString { get; set; }
 }

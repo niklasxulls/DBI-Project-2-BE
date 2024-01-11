@@ -20,6 +20,10 @@ using stackblob.Application.Interfaces.Services;
 using stackblob.Domain.ValueObjects;
 using MongoDB.Bson;
 using stackblob.Domain.Settings;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Order;
+using BenchmarkDotNet.Reports;
+using BenchmarkDotNet.Running;
 
 namespace Application.IntegrationTests;
 
@@ -50,7 +54,7 @@ public class SetupFixture : IDisposable
         set { _currentIpAddress = value; }
         get { return _currentIpAddress; }
     }
-
+    public Summary BenchmarkSummary { get; }
     public SetupFixture()
     {
         //var builder = new ConfigurationBuilder().a

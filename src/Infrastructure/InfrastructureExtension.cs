@@ -39,12 +39,14 @@ public static class InfrastructureExtension
         connectionString = configuration.GetConnectionString("DefaultConnection");
 #endif
 
+        GlobalUtil.ConnectionString = connectionString;
+
         if (configuration.GetValue<bool>("IsMongoDb"))
         {
-            var databaseName = configuration.GetConnectionString("DBName");
+            GlobalUtil.MongoDbName = configuration.GetConnectionString("DBName") ?? "";
            
-            var mongoDb = new MongoClient(connectionString).GetDatabase(databaseName);
-            
+            var mongoDb = new MongoClient(connectionString).GetDatabase(GlobalUtil.MongoDbName);
+
 
 
             services.AddDbContext<StackblobDbContext>(options =>

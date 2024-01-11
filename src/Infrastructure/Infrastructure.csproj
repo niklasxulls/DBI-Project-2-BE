@@ -60,7 +60,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Persistence\Configurations\MongoFE\" />
       <Folder Include="Persistence\Extensions\" />
       <Folder Include="Persistence\Migrations\" />
     </ItemGroup>

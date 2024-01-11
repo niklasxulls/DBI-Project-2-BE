@@ -43,16 +43,19 @@ public static class InfrastructureExtension
 
         if (configuration.GetValue<bool>("IsMongoDb"))
         {
+            GlobalUtil.IsMongoDb = true;
+        }
+
+        if (GlobalUtil.IsMongoDb)
+        {
             GlobalUtil.MongoDbName = configuration.GetConnectionString("DBName") ?? "";
 
             var mongoDb = new MongoClient(connectionString).GetDatabase(GlobalUtil.MongoDbName);
 
-
-
             services.AddDbContext<StackblobDbContext>(options =>
                options.UseMongoDB(
                    mongoDb.Client,
-                   mongoDb.DatabaseNamespace.DatabaseName
+                   mongoDb.DatabaseNamespace.DatabaseName,
                 )
                );
         }
@@ -63,18 +66,12 @@ public static class InfrastructureExtension
                     connectionString,
                     b => b.MigrationsAssembly(typeof(StackblobDbContext).Assembly.FullName))
                 );
-
-            services.AddScoped<IStackblobDbContext>(provider => provider.GetRequiredService<StackblobDbContext>());
-
-            services.Configure<AppConfig>(configuration);
         }
 
 
-        if(configuration.GetValue<bool>("IsMongoDb"))
-        {
-            GlobalUtil.IsMongoDb = true;
-        }
+        services.AddScoped<IStackblobDbContext>(provider => provider.GetRequiredService<StackblobDbContext>());
 
+        services.Configure<AppConfig>(configuration);
 
 
         /*

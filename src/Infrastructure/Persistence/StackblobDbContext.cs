@@ -19,6 +19,7 @@ using stackblob.Domain.Entities.SqlREL.Defaults;
 using System.Xml;
 using stackblob.Infrastructure.Persistence.Configurations.MongoREL;
 using stackblob.Infrastructure.Persistence.Configurations.SqlREL;
+using stackblob.Domain.Entities.MongoFE;
 
 namespace stackblob.Infrastructure.Persistence;
 
@@ -32,12 +33,14 @@ public class StackblobDbContext : DbContext, IStackblobDbContext
     public DbSet<AnswerMongoREL> AnswersMongoREL { get; set; } = null!;
     public DbSet<UserMongoREL> UsersMongoREL { get; set; }
 
+    public DbSet<QuestionMongoFE> QuestionsMongoFE { get; set; }
+
+
     public DbSet<TagSqlREL> TagsSqlREL { get; set; }
     public DbSet<QuestionSqlREL> QuestionsSqlREL { get; set; }
     public DbSet<AnswerSqlREL> AnswersSqlREL { get; set; }
     public DbSet<UserSqlREL> UsersSqlREL { get; set; }
 
-    //public DbSet<MongoQuestion> MongoQuestions { get; set; }
 
     public StackblobDbContext(DbContextOptions<StackblobDbContext> options, IOptions<ConnectionStringOptions> connectionStringOptions, ICurrentUserService currentUser) : base(options)
 
@@ -104,6 +107,10 @@ public class StackblobDbContext : DbContext, IStackblobDbContext
             builder.Ignore<QuestionTagMongoREL>();
             builder.Entity<QuestionTagMongoREL>().ToTable(nameof(QuestionTagMongoREL), t => t.ExcludeFromMigrations());
             builder.Entity<QuestionTagMongoREL>().Metadata.SetIsTableExcludedFromMigrations(true);
+
+            builder.Ignore<QuestionMongoFE>();
+            builder.Entity<QuestionMongoFE>().ToTable(nameof(QuestionMongoFE), t => t.ExcludeFromMigrations());
+            builder.Entity<QuestionMongoFE>().Metadata.SetIsTableExcludedFromMigrations(true);
         }
         else
         {

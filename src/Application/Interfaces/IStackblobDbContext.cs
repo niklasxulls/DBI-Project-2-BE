@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using stackblob.Domain.Entities.MongoREL;
 using stackblob.Domain.Entities.SqlREL;
+using stackblob.Domain.Entities.MongoFE;
 
 namespace stackblob.Application.Interfaces
 {
@@ -16,6 +17,8 @@ namespace stackblob.Application.Interfaces
         DbSet<QuestionMongoREL> QuestionsMongoREL { get; set; }
         DbSet<AnswerMongoREL> AnswersMongoREL { get; set; }
         DbSet<UserMongoREL> UsersMongoREL { get; set; }
+
+        DbSet<QuestionMongoFE> QuestionsMongoFE { get; set; }
 
 
         DbSet<TagSqlREL> TagsSqlREL { get; set; }

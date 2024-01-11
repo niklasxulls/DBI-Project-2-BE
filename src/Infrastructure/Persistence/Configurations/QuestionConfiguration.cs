@@ -49,6 +49,10 @@ namespace stackblob.Infrastructure.Persistence.Configurations
             //builder.HasOne(a => a.CreatedBy)
             //       .WithMany(a => a.QuestionsCreated)
             //       .HasForeignKey(a => a.CreatedById);
+
+            builder.HasMany(a => a.Tags)
+                   .WithOne(a => a.Question)
+                   .HasForeignKey(a => a.QuestionId);
         }
     }
 }

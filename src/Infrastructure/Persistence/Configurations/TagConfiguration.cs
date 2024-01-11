@@ -40,5 +40,9 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
 
             builder.Property(r => r.Name).HasMaxLength(50).IsRequired();
         }
+
+        builder.HasMany(a => a.Questions)
+               .WithOne(a => a.Tag)
+               .HasForeignKey(a => a.TagId);
     }
 }

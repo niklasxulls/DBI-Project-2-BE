@@ -97,13 +97,13 @@ public class TestBase : IAsyncLifetime
 
                 var tags = f.PickRandom(tagPool, new Random().Next(1, 5)).ToList();
 
-                //s.Tags.AddRange(tags.Select(t =>
-                //{
-                //    return new QuestionTag()
-                //    {
-                //        Tag = t,
-                //    };
-                //}));
+                s.Tags.AddRange(tags.Select(t =>
+                {
+                    return new QuestionTag()
+                    {
+                        Tag = t,
+                    };
+                }));
             });
 
         if (!GlobalUtil.IsMongoDb)

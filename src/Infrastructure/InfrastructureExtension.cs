@@ -55,7 +55,7 @@ public static class InfrastructureExtension
             services.AddDbContext<StackblobDbContext>(options =>
                options.UseMongoDB(
                    mongoDb.Client,
-                   mongoDb.DatabaseNamespace.DatabaseName,
+                   mongoDb.DatabaseNamespace.DatabaseName
                 )
                );
         }

@@ -114,20 +114,20 @@ public class StackblobDbContext : DbContext, IStackblobDbContext
         }
         else
         {
-            builder.Ignore<QuestionSqlREL>();
-            builder.Entity<QuestionSqlREL>().ToTable(nameof(QuestionSqlREL), t => t.ExcludeFromMigrations());
+            //builder.Ignore<QuestionSqlREL>();
+            //builder.Entity<QuestionSqlREL>().ToTable(nameof(QuestionSqlREL), t => t.ExcludeFromMigrations());
 
-            builder.Ignore<AnswerSqlREL>();
-            builder.Entity<AnswerSqlREL>().ToTable(nameof(AnswerSqlREL), t => t.ExcludeFromMigrations());
+            //builder.Ignore<AnswerSqlREL>();
+            //builder.Entity<AnswerSqlREL>().ToTable(nameof(AnswerSqlREL), t => t.ExcludeFromMigrations());
 
-            builder.Ignore<TagSqlREL>();
-            builder.Entity<TagSqlREL>().ToTable(nameof(TagSqlREL), t => t.ExcludeFromMigrations());
+            //builder.Ignore<TagSqlREL>();
+            //builder.Entity<TagSqlREL>().ToTable(nameof(TagSqlREL), t => t.ExcludeFromMigrations());
 
-            builder.Ignore<UserSqlREL>();
-            builder.Entity<UserSqlREL>().ToTable(nameof(UserSqlREL), t => t.ExcludeFromMigrations());
+            //builder.Ignore<UserSqlREL>();
+            //builder.Entity<UserSqlREL>().ToTable(nameof(UserSqlREL), t => t.ExcludeFromMigrations());
 
-            builder.Ignore<QuestionTagSqlREL>();
-            builder.Entity<QuestionTagSqlREL>().ToTable(nameof(QuestionTagSqlREL), t => t.ExcludeFromMigrations());
+            //builder.Ignore<QuestionTagSqlREL>();
+            //builder.Entity<QuestionTagSqlREL>().ToTable(nameof(QuestionTagSqlREL), t => t.ExcludeFromMigrations());
         }
 
 

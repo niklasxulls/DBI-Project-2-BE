@@ -16,13 +16,13 @@ public static class StackblobDbContextSeed
     public static async Task SeedSampleData(StackblobDbContext context)
     {
 
-        //var questionX = new QuestionMongoREL();
-        //context.QuestionsMongoREL.Add(questionX);
+        var questionX = new QuestionMongoREL();
+        context.QuestionsMongoREL.Add(questionX);
 
         //var question = new QuestionMongoFE();
         //context.QuestionsMongoFE.Add(question);
 
-        //await context.SaveChangesAsync(default);
+        await context.SaveChangesAsync(default);
 
     }
 }

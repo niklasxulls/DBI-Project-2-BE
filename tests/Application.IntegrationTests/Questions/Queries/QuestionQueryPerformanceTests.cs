@@ -33,7 +33,7 @@ public class QuestionQueryPerformanceTests : TestBase
     [InlineData(100)]
     [InlineData(1000)]
     [InlineData(100000)]
-    public async Task ShouldTestQueryPerformanceWithoutFilter(int size)
+    public async Task Should_Test_Query_Performance_Without_Filter(int size)
     {
         var testStopwatch = Stopwatch.StartNew();
         var dbStopWatch = Stopwatch.StartNew();
@@ -64,7 +64,7 @@ public class QuestionQueryPerformanceTests : TestBase
     [InlineData(100)]
     [InlineData(1000)]
     [InlineData(100000)]
-    public async Task ShouldTestQueryPerformanceWithFilter(int size)
+    public async Task Should_Test_Query_Performance_With_Filter(int size)
     {
         var testStopwatch = Stopwatch.StartNew();
         var dbStopWatch = Stopwatch.StartNew();

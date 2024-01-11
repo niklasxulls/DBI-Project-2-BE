@@ -44,7 +44,7 @@ public static class InfrastructureExtension
         if (configuration.GetValue<bool>("IsMongoDb"))
         {
             GlobalUtil.MongoDbName = configuration.GetConnectionString("DBName") ?? "";
-           
+
             var mongoDb = new MongoClient(connectionString).GetDatabase(GlobalUtil.MongoDbName);
 
 
@@ -63,11 +63,12 @@ public static class InfrastructureExtension
                     connectionString,
                     b => b.MigrationsAssembly(typeof(StackblobDbContext).Assembly.FullName))
                 );
+
+            services.AddScoped<IStackblobDbContext>(provider => provider.GetRequiredService<StackblobDbContext>());
+
+            services.Configure<AppConfig>(configuration);
         }
 
-        services.AddScoped<IStackblobDbContext>(provider => provider.GetRequiredService<StackblobDbContext>());
-
-        services.Configure<AppConfig>(configuration);
 
         if(configuration.GetValue<bool>("IsMongoDb"))
         {

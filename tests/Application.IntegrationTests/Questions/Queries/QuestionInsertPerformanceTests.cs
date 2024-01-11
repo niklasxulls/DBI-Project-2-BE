@@ -33,7 +33,7 @@ public class QuestionInsertPerformanceTests : TestBase
     [InlineData(100)]
     [InlineData(1000)]
     [InlineData(100000)]
-    public async Task ShouldTestInsertPerformance(int size)
+    public async Task Should_Test_Insert_Performance(int size)
     {
         var testStopwatch = Stopwatch.StartNew();
         var dbStopWatch = Stopwatch.StartNew();

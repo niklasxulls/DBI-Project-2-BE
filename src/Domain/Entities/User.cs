@@ -15,7 +15,7 @@ public class User : BaseEntity
     public User()
     {
         QuestionsCreated = new List<Question>();
-        //AnswersCreated = new List<Answer>();
+        AnswersCreated = new List<Answer>();
         //MongoQuestionsCreated = new List<MongoQuestion>();
         //MongoAnswersCreated = new List<MongoAnswer>();
     }
@@ -30,7 +30,7 @@ public class User : BaseEntity
     public string? StatusText { get; set; }
 
     public ICollection<Question> QuestionsCreated { get; set; }
-    //public ICollection<Answer> AnswersCreated { get; set; }
+    public ICollection<Answer> AnswersCreated { get; set; }
     //public ICollection<MongoQuestion> MongoQuestionsCreated { get; set; }
     //public ICollection<MongoAnswer> MongoAnswersCreated { get; set; }
 }

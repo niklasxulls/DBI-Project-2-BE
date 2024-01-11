@@ -27,8 +27,8 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
                    .HasConversion<MongoDbValueConverter>()
                    .ValueGeneratedNever();
 
-            //builder.Property(a => a.QuestionId)
-            //       .HasConversion<MongoDbValueConverter>();
+            builder.Property(a => a.QuestionId)
+                   .HasConversion<MongoDbValueConverter>();
 
             //builder.Property(a => a.CreatedById)
             //       .HasConversion<MongoDbValueNullableConverter>();
@@ -46,8 +46,9 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
         }
 
 
-        //builder.HasOne(v => v.Question)
-        //       .WithMany(q => q.Answers);
+        builder.HasOne(v => v.Question)
+               .WithMany(q => q.Answers)
+               .HasForeignKey(v => v.QuestionId);
 
         //builder.HasOne(a => a.CreatedBy)
         //    .WithMany(a => a.AnswersCreated)

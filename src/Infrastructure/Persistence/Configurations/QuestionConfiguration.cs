@@ -43,9 +43,6 @@ namespace stackblob.Infrastructure.Persistence.Configurations
                 builder.Property(r => r.Description).IsRequired().HasMaxLength(10000);
             }
 
-            //builder.HasMany(u => u.Answers)
-            //       .WithOne(r => r.Question);
-
             //builder.HasOne(a => a.CreatedBy)
             //       .WithMany(a => a.QuestionsCreated)
             //       .HasForeignKey(a => a.CreatedById);

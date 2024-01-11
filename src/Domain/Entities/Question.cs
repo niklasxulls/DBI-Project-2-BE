@@ -13,7 +13,7 @@ public class Question
     public Question()
     {
         Tags = new List<QuestionTag>();
-        //Answers = new List<Answer>();
+        Answers = new List<Answer>();
     }
     public string QuestionId { get; set; }
 
@@ -22,5 +22,5 @@ public class Question
 
 
     public ICollection<QuestionTag> Tags { get; set; }
-    //public ICollection<Answer> Answers { get; set; }
+    public ICollection<Answer> Answers { get; set; }
 }

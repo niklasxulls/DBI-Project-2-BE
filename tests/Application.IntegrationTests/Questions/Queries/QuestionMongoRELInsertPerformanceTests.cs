@@ -20,11 +20,11 @@ using Xunit.Sdk;
 namespace stackblob.stackblob.Application.IntegrationTests.Questions.Queries;
 
 
-public class QuestionInsertPerformanceTests : TestBase
+public class QuestionMongoRELInsertPerformanceTests : TestBase
 {
     private readonly ITestOutputHelper _output;
 
-    public QuestionInsertPerformanceTests(SetupFixture setup, ITestOutputHelper output ) : base(setup)
+    public QuestionMongoRELInsertPerformanceTests(SetupFixture setup, ITestOutputHelper output ) : base(setup)
     {
         _output = output;
     }

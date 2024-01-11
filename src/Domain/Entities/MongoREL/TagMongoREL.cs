@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 
-namespace stackblob.Domain.Entities.Lookup;
+namespace stackblob.Domain.Entities.MongoREL;
 
-public class Tag
+public class TagMongoREL
 {
-    public Tag()
+    public TagMongoREL()
     {
-        Questions = new List<QuestionTag>();
+        Questions = new List<QuestionTagMongoREL>();
     }
     public string TagId { get; set; }
     public string Name { get; set; } = string.Empty;
-    public ICollection<QuestionTag> Questions { get; set; }
+    public ICollection<QuestionTagMongoREL> Questions { get; set; }
 }

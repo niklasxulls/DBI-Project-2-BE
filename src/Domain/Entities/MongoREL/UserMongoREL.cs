@@ -1,5 +1,5 @@
 ﻿using MongoDB.Bson;
-using stackblob.Domain.Entities;
+using stackblob.Domain.Entities.MongoREL.Defaults;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,16 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace stackblob.Domain.Entities;
+namespace stackblob.Domain.Entities.MongoREL;
 
-public class User : BaseEntity
+public class UserMongoREL : BaseEntityMongoREL
 {
-    public User()
+    public UserMongoREL()
     {
-        QuestionsCreated = new List<Question>();
-        AnswersCreated = new List<Answer>();
-        //MongoQuestionsCreated = new List<MongoQuestion>();
-        //MongoAnswersCreated = new List<MongoAnswer>();
+        QuestionsCreated = new List<QuestionMongoREL>();
+        AnswersCreated = new List<AnswerMongoREL>();
     }
 
     public string UserId { get; set; }
@@ -29,8 +27,6 @@ public class User : BaseEntity
     public string Salt { get; set; } = string.Empty;
     public string? StatusText { get; set; }
 
-    public ICollection<Question> QuestionsCreated { get; set; }
-    public ICollection<Answer> AnswersCreated { get; set; }
-    //public ICollection<MongoQuestion> MongoQuestionsCreated { get; set; }
-    //public ICollection<MongoAnswer> MongoAnswersCreated { get; set; }
+    public ICollection<QuestionMongoREL> QuestionsCreated { get; set; }
+    public ICollection<AnswerMongoREL> AnswersCreated { get; set; }
 }

@@ -20,16 +20,16 @@ using Xunit.Sdk;
 namespace stackblob.stackblob.Application.IntegrationTests.Questions.Queries;
 
 
-public class QuestionInsertPerformanceTests : TestBase
+public class QuestionSqlRELInsertPerformanceTests : TestBase
 {
     private readonly ITestOutputHelper _output;
 
-    public QuestionInsertPerformanceTests(SetupFixture setup, ITestOutputHelper output ) : base(setup)
+    public QuestionSqlRELInsertPerformanceTests(SetupFixture setup, ITestOutputHelper output ) : base(setup)
     {
         _output = output;
     }
 
-    [Theory]
+    [SkipIfMongo]
     [InlineData(100)]
     [InlineData(1000)]
     [InlineData(100000)]
@@ -38,9 +38,9 @@ public class QuestionInsertPerformanceTests : TestBase
         var testStopwatch = Stopwatch.StartNew();
         var dbStopWatch = Stopwatch.StartNew();
 
-        foreach (var question in questionFaker.Generate(size))
+        foreach (var question in questionFakerSqlREL.Generate(size))
         {
-            _context.Questions.Add(question);
+            _context.QuestionsSqlREL.Add(question);
             await _context.SaveChangesAsync(default);
         }
 

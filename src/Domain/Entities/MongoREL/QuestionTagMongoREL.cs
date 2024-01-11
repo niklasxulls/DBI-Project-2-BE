@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 
-namespace stackblob.Domain.Entities;
+namespace stackblob.Domain.Entities.MongoREL;
 
-public class QuestionTag
+public class QuestionTagMongoREL
 {
     public string QuestionId { get; set; }
-    public Question Question { get; set; }
+    public QuestionMongoREL Question { get; set; }
     public string TagId { get; set; }
-    public Tag Tag { get; set; }
+    public TagMongoREL Tag { get; set; }
 }

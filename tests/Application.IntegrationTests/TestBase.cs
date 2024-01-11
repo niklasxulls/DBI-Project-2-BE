@@ -1,7 +1,6 @@
 ﻿using stackblob.Application.Interfaces;
 using stackblob.Application.Interfaces.Services;
 using AutoMapper;
-using stackblob.Domain.Entities;
 using stackblob.Domain.Enums;
 using stackblob.Infrastructure.Persistence;
 using MediatR;
@@ -14,7 +13,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using stackblob.Infrastructure.Services;
-using stackblob.Domain.Entities.Lookup;
 using Bogus;
 using NuGet.Packaging;
 using stackblob.Domain.Util;
@@ -23,7 +21,9 @@ using MongoDB.Bson;
 using stackblob.Domain.Settings;
 using MongoDB.Driver;
 using Microsoft.EntityFrameworkCore;
-using Tag = stackblob.Domain.Entities.Lookup.Tag;
+using TagMongoREL = stackblob.Domain.Entities.MongoREL.TagMongoREL;
+using stackblob.Domain.Entities.MongoREL;
+using stackblob.Domain.Entities.SqlREL;
 
 namespace Application.IntegrationTests;
 
@@ -35,8 +35,8 @@ public class TestBase : IAsyncLifetime
     protected readonly StackblobDbContext _context;
     protected readonly IMapper _mapper;
     protected Dictionary<string, string> UserPasswords = new();
-    private User _defaultUser;
-    public User DefaultUser
+    private UserMongoREL _defaultUser;
+    public UserMongoREL DefaultUserMongoREL
     { 
         private set
         {
@@ -51,10 +51,26 @@ public class TestBase : IAsyncLifetime
     protected ICollection<string> questionTitlePool = new List<string>();
     protected ICollection<string> tagNamePool = new List<string>();
     protected ICollection<string> answerDescPool = new List<string>();
-    protected Faker<Answer> answerFaker { get; set; }
-    protected Faker<Question> questionFaker { get; set; }
-    public ICollection<Tag> tagPool { get; set; }
-    public ICollection<User> usersPool { get; set; }
+
+
+    /*
+     * Mongo REL faker
+     */
+    protected Faker<AnswerMongoREL> answerFakerMongoREL { get; set; }
+    protected Faker<QuestionMongoREL> questionFakerMongoREL { get; set; }
+    public ICollection<TagMongoREL> tagPoolMongoREL { get; set; }
+    public ICollection<UserMongoREL> usersPoolMongoREL { get; set; }
+
+
+    /*
+     * SQL REL faker
+     */
+    protected Faker<AnswerSqlREL> answerFakerSqlREL { get; set; }
+    protected Faker<QuestionSqlREL> questionFakerSqlREL { get; set; }
+    public ICollection<TagSqlREL> tagPoolSqlREL { get; set; }
+    public ICollection<UserSqlREL> usersPoolSqlREL { get; set; }
+
+
 
     public TestBase(SetupFixture setup)
     {
@@ -76,42 +92,42 @@ public class TestBase : IAsyncLifetime
              "How can I optimize my code for better performance?","How do I implement a linked list in Python?","How do I debug a segmentation fault error in C++?","How do I create a RESTful API in Node.js?","How do I implement a binary search tree in Java?","How can I use regular expressions to parse text in Python?","How do I implement a stack data structure in C++?","How do I use the MVC design pattern in Ruby on Rails?","How do I use recursion to solve a problem in Python?","How do I implement a queue data structure in Java?","How do I use Git for version control?","How can I use machine learning to solve a problem in Python?","How do I use a makefile to build a C++ program?","How can I use SQL to query a database?","How do I use a debugger to find bugs in my code?","How can I use threading to improve the performance of my Python program?","How do I use a for loop to iterate through a list in Python?","How can I use a while loop to solve a problem in Python?","How do I use a switch statement in C++?","How can I use a try-catch block to handle exceptions in Java?","How do I use an if-else statement to control the flow of my program?","How can I use a function to solve a problem in Python?","How do I use an array to store data in C++?","How can I use a dictionary to store data in Python?","How do I use a class to structure my code in Java?","How can I use a module to organize my code in Python?","How do I use a pointer to manipulate data in C++?","How can I use an object to structure my code in Python?","How do I use inheritance to structure my code in Java?","How can I use polymorphism to structure my code in Python?","How do I use an abstract class to structure my code in C++?","How can I use an interface to structure my code in Java?","How do I use a constructor to initialize an object in C++?","How can I use a destructor to clean up resources in C++?","How do I use an operator overload to customize the behavior of operators in C++?","How can I use a template to create a generic function in C++?","How do I use a namespace to organize my code in C++?","How can I use an exception to handle errors in Python?","How do I use a lambda function to create a small anonymous function in Python?","How can I use a yield statement to create a generator in Python?","How do I use a decorator to add functionality to a function in Python?","How can I use a map function to transform a list in Python?","How do I use a filter function to select elements from a list in Python?","How can I use a reduce function to combine elements from a list in Python?","How do I use a zip function to combine elements from multiple lists in Python?","How can I use a set to store unique elements in Python?","How do I use a tuple to store multiple values","How can I use a named tuple to store multiple values in Python?","How do I use a list comprehension to create a list in Python?","How can I use a dictionary comprehension to create a dictionary in Python?","How do I use a set comprehension to create a set in Python?","How can I use a generator expression to create a generator in Python?","How do I use an async function to perform asynchronous tasks in Python?","How can I use an await statement to wait for a task to complete in Python?","How do I use a pandas dataframe to manipulate data in Python?","How can I use a numpy array to perform numerical computations in Python?","How do I use a matplotlib plot to visualize data in Python?","How can I use a seaborn plot to visualize data in Python?","How do I use a scikit-learn model to perform machine learning in Python?","How can I use a TensorFlow model to perform machine learning in Python?","How do I use a Keras model to perform deep learning in Python?","How can I use a PyTorch model to perform deep learning in Python?","How do I use a Flask framework to create a web application in Python?","How can I use a Django framework to create a web application in Python?","How do I use a Vue.js framework to create a web application in JavaScript?","How can I use a React.js framework to create a web application in JavaScript?","How do I use a Angular.js framework to create a web application in JavaScript?","How can I use a SASS preprocessor to style a web application?","How do I use a LESS preprocessor to style a web application?","How can I use a Gulp task runner to automate tasks in a web application?","How do I use a Webpack module bundler to optimize a web application?","How can I use a Jest testing framework to test a JavaScript application?","How do I use a Mocha testing framework to test a JavaScript application?","How can I use a Chai assertion library to test a JavaScript application?","How do I use a Cypress testing framework to test a web application?","How can I use an Enzyme testing library to test a React application?","How do I use a JUnit testing framework to test a Java application?","How can I use a TestNG testing framework to test a Java application?","How do I use a NUnit testing framework to test a .NET application?","How can I use a Cucumber BDD framework to write acceptance tests for a web application?","How do I use a Selenium webdriver to automate browser testing?","How can I use a Jenkins CI/CD pipeline to automate the deployment of my application?","How do I use a Docker container to deploy my application?","How can I use a Kubernetes cluster to manage my application's containers?","How do I use a Ansible script to automate server configuration?","How can I use a Terraform script to provision infrastructure?","How do I use a Gitlab CI/CD pipeline to automate the deployment of my application?","How can I use a AWS Lambda function to run serverless code?","How do I use a Azure Functions to run serverless code?","How can I use a Google Cloud Function to run serverless code?","How do I use a Firebase Cloud Firestore to store data in a web application?","How can I use a MongoDB database to store data in a web application?","How do I use a Cassandra database to store data in a web application?","How can I use a RabbitMQ message queue to handle async tasks in a web application?","How do I use a Kafka message queue to handle async tasks in a web application?","How can I use a Redis cache to improve the performance of a web application?","How do I use a Elasticsearch index to search data in a web application?","How can I use a Kafka Streams to process data streams in a web application?","How do I use a Apache Spark to process large data sets in a web application?","How can I use a TensorFlow.js to perform machine learning on the browser?"
          };
 
-        answerFaker = new Faker<Answer>()
-         .Rules((f, a) =>
-         {
-             var desc = f.PickRandom(answerDescPool);
 
-             a.Description = desc;
-             a.Title = desc.Substring(0, Math.Min(desc.Length, 30));
-             //a.CreatedBy = f.PickRandom(usersPool);
+        /*
+         * Mongo REL
+         */
+        if(GlobalUtil.IsMongoDb)
+        {
+            answerFakerMongoREL = new Faker<AnswerMongoREL>()
+             .Rules((f, a) =>
+             {
+                 var desc = f.PickRandom(answerDescPool);
 
-         });
+                 a.Description = desc;
+                 a.Title = desc.Substring(0, Math.Min(desc.Length, 30));
+                 a.CreatedBy = f.PickRandom(usersPoolMongoREL);
 
-        questionFaker = new Faker<Question>()
-            .Rules((f, s) =>
-            {
-                s.Title = f.PickRandom(questionTitlePool);
-                s.Description = f.PickRandom(questionTitlePool);
-                s.Answers = answerFaker.GenerateBetween(1, 3).ToList();
-                s.CreatedBy = f.PickRandom(usersPool);
+             });
 
-                var tags = f.PickRandom(tagPool, new Random().Next(1, 5)).ToList();
-
-                s.Tags.AddRange(tags.Select(t =>
+            questionFakerMongoREL = new Faker<QuestionMongoREL>()
+                .Rules((f, s) =>
                 {
-                    return new QuestionTag()
-                    {
-                        Tag = t,
-                    };
-                }));
-            });
+                    s.Title = f.PickRandom(questionTitlePool);
+                    s.Description = f.PickRandom(questionTitlePool);
+                    s.Answers = answerFakerMongoREL.GenerateBetween(1, 3).ToList();
+                    s.CreatedBy = f.PickRandom(usersPoolMongoREL);
 
-        if (!GlobalUtil.IsMongoDb)
-        {
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
-        } else
-        {
+                    var tags = f.PickRandom(tagPoolMongoREL, new Random().Next(1, 5)).ToList();
+
+                    s.Tags.AddRange(tags.Select(t =>
+                    {
+                        return new QuestionTagMongoREL()
+                        {
+                            Tag = t,
+                        };
+                    }));
+                });
+
             var client = new MongoClient(GlobalUtil.ConnectionString);
 
             var database = client.GetDatabase(GlobalUtil.MongoDbName);
@@ -124,12 +140,50 @@ public class TestBase : IAsyncLifetime
             foreach(var collection in allCollections.Current) { 
                 database.DropCollection(collection);
             }
+        }
 
 
+        /*
+        * SQL REL
+        */
+        if (!GlobalUtil.IsMongoDb)
+        {
+            answerFakerSqlREL = new Faker<AnswerSqlREL>()
+             .Rules((f, a) =>
+             {
+                 var desc = f.PickRandom(answerDescPool);
+
+                 a.Description = desc;
+                 a.Title = desc.Substring(0, Math.Min(desc.Length, 30));
+                 a.CreatedBy = f.PickRandom(usersPoolSqlREL);
+
+             });
+
+            questionFakerSqlREL = new Faker<QuestionSqlREL>()
+                .Rules((f, s) =>
+                {
+                    s.Title = f.PickRandom(questionTitlePool);
+                    s.Description = f.PickRandom(questionTitlePool);
+                    s.Answers = answerFakerSqlREL.GenerateBetween(1, 3).ToList();
+                    s.CreatedBy = f.PickRandom(usersPoolSqlREL);
+
+                    var tags = f.PickRandom(tagPoolSqlREL, new Random().Next(1, 5)).ToList();
+
+                    s.Tags.AddRange(tags.Select(t =>
+                    {
+                        return new QuestionTagSqlREL()
+                        {
+                            Tag = t,
+                        };
+                    }));
+                });
+
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
         }
     }
 
-    public async Task<TResponse> SendMediator<TResponse>(IRequest<TResponse> request, User? u = null, bool explicitNonUser = false, bool userIsNotVerified = false)
+    public async Task<TResponse> SendMediator<TResponse>(IRequest<TResponse> request, UserMongoREL? u = null, bool explicitNonUser = false, bool userIsNotVerified = false)
     {
         _setup.CurrentUserId = u == null && !explicitNonUser ? "" : "";
         _setup.CurrentUserIsVerified = !explicitNonUser && !userIsNotVerified;
@@ -149,152 +203,83 @@ public class TestBase : IAsyncLifetime
     {
         await StackblobDbContextSeed.SeedSampleData(_context);
 
-        #region Populate Users DBContext Collection
 
-
-        Faker<User> userFaker = new Faker<User>()
-            .RuleFor(u => u.Firstname, f => f.Person.FirstName)
-            .RuleFor(u => u.Lastname, f => f.Person.LastName)
-            .RuleFor(u => u.Password, f => f.Internet.Password())
-            .RuleFor(u => u.Email, f => f.Internet.Email());
-
-
-      
-        _context.SaveChanges();
-
-        foreach (var user in userFaker.Generate(20))
+        /*
+         *  Mongo REL
+         */
+        if(GlobalUtil.IsMongoDb)
         {
+            // users
+            Faker<UserMongoREL> userFaker = new Faker<UserMongoREL>()
+                .RuleFor(u => u.Firstname, f => f.Person.FirstName)
+                .RuleFor(u => u.Lastname, f => f.Person.LastName)
+                .RuleFor(u => u.Password, f => f.Internet.Password())
+                .RuleFor(u => u.Email, f => f.Internet.Email());
 
-            try
-            {
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync(default);
 
-                UserPasswords[user!.UserId] = user.Password;
-                user.Salt = CryptoUtil.CreateSalt();
-                user.Password = CryptoUtil.CreateHash(user.Salt + user.Password);
-                _context.SaveChanges();
-            } catch(Exception e)
+            foreach (var user in userFaker.Generate(20))
             {
-                var x = 0;
+                try
+                {
+                    _context.UsersMongoREL.Add(user);
+                    await _context.SaveChangesAsync(default);
+
+                    UserPasswords[user!.UserId] = user.Password;
+                    user.Salt = CryptoUtil.CreateSalt();
+                    user.Password = CryptoUtil.CreateHash(user.Salt + user.Password);
+                    _context.SaveChanges();
+                } catch(Exception e)
+                {
+                    var x = 0;
+                }
             }
+
+            DefaultUserMongoREL = _context.UsersMongoREL.First();
+            usersPoolMongoREL = _context.UsersMongoREL.ToList();
+
+            // tags
+            tagPoolMongoREL = tagNamePool.Select(t => new TagMongoREL() { Name = t }).ToList();
+            _context.TagsMongoREL.AddRange(tagPoolMongoREL);
+            _context.SaveChanges();
         }
 
-        DefaultUser = _context.Users.First();
+
+        /*
+         *  SQL REL
+         */
+        if (!GlobalUtil.IsMongoDb)
+        {
+            // users
+            Faker<UserSqlREL> userFaker = new Faker<UserSqlREL>()
+                .RuleFor(u => u.Firstname, f => f.Person.FirstName)
+                .RuleFor(u => u.Lastname, f => f.Person.LastName)
+                .RuleFor(u => u.Password, f => f.Internet.Password())
+                .RuleFor(u => u.Email, f => f.Internet.Email());
 
 
-        tagPool = tagNamePool.Select(t => new Tag() { Name = t }).ToList();
-
-        _context.Tags.AddRange(tagPool);
-        _context.SaveChanges();
-
-
-
-
-
-        usersPool = _context.Users.ToList();
-
-        Faker<Question> questionFaker = new Faker<Question>()
-            .Rules((f, s) =>
+            foreach (var user in userFaker.Generate(20))
             {
-                s.Title = f.PickRandom(questionTitlePool);
-                s.Description = f.PickRandom(questionTitlePool);
-                //s.Answers = answerFaker.GenerateBetween(1, 3).ToList();
-                //s.QuestionVotes = f.PickRandom(usersPool, new Random().Next(1, usersPool.Count - 1)).DistinctBy(a => a.UserId).Select(u => new Vote()
-                //{
-                //    IsUpVote = new Random().Next(1, 4) < 70,
-                //    CreateByInQuestionId = u.UserId
-                //}).ToList();
-                //s.CorrectAnswer = new Random().Next(1, 100) < 55 ? s.Answers.ToArray()[new Random().Next(0, s.Answers.Count)] : null;
-                //s.Tags = f.PickRandom(tagPool, new Random().Next(1, 5)).ToList();
-            });
+                try
+                {
+                    _context.UsersSqlREL.Add(user);
+                    await _context.SaveChangesAsync(default);
 
-        //foreach (var user in usersPool)
-        //{
-        //    var questions = questionFaker.Generate(2);
-        //    foreach(var question in questions) { question.CreatedBy = user; };
-        //    user.Question.AddRange(questions);
-        //}
-        _context.SaveChanges();
+                    user.Salt = CryptoUtil.CreateSalt();
+                    user.Password = CryptoUtil.CreateHash(user.Salt + user.Password);
+                    _context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    var x = 0;
+                }
+            }
+            usersPoolSqlREL = _context.UsersSqlREL.ToList();
 
-        //var noCorrectAnswers = _context.Users.Select(q => q.Question.First().QuestionId).ToList();
-
-        //foreach(var user in usersPool)
-        //{
-        //    var answers = answerFaker.Generate(3);
-        //    user.Answers.AddRange(answers);
-
-        //    var questions = _context.Questions.Where(q => q.CreatedById != user.UserXId).OrderBy(q => q.Answers.Count).Take(3).ToList();
-
-
-        //    bool hasCorrectQuestion = false;
-
-        //for (int i = 0; i < questions.Count; i++)
-        //{
-        //    questions[i].Answers.Add(answers[i]);
-
-        //    if (!hasCorrectQuestion && !noCorrectAnswers.Contains(questions[i].QuestionId) && questions[i].CorrectAnswer == null)
-        //    {
-        //        questions[i].CorrectAnswer = answers[i];
-        //        hasCorrectQuestion = true;
-        //    }
-        //}
-        //    _context.SaveChanges();
-        //}
-
-        _context.SaveChanges();
-
-        //foreach (var question in questionFaker.Generate(20))
-        //{
-        //    _context.Questions.Add(question);
-        //    await _context.SaveChangesAsync(default);
-        //}
-
-        var quests = _context.Questions.ToList();
-        #region Populate Tags DBContext Collection
-
-        _context.SaveChanges();
-        #endregion
-
-        //var answer5 = new Answer() { CreatedBy = user2, Title = "Answer Five", Description = "Content of Answer Five" };
-
-
-        #region Populate Questions DBContext Collection
-        //var question1 = new Question() { Title = "Question One", Description = "Content of Question one", CreatedBy = DefaultUser };
-        //var question2 = new Question() { Title = "Question Two", Description = "Content of Question two", CreatedBy = DefaultUser };
-        //var question3 = new Question() { Title = "Question Three", Description = "Content of Question three", CreatedBy = user2 };
-        //_context.Questions.AddRange(question1, question2, question3);
-        _context.SaveChanges();
-
-
-        #region Populate Answers 
-
-        //var answer1 = new Answer() { CreatedBy = user2, Title = "Answer One", Description = "Content of Answer One", Question = question1 };
-        //var answer2 = new Answer() { CreatedBy = user3, Title = "Answer Two", Description = "Content of Answer Two", Question = question1 };
-        //var answer3 = new Answer() { CreatedBy = user4, Title = "Answer Three", Description = "Content of Answer Three", Question = question1 };
-        //var answer4 = new Answer() { CreatedBy = user5, Title = "Answer Four", Description = "Content of Answer Four", Question = question1 };
-
-        //var answer5 = new Answer() { CreatedBy = user2, Title = "Answer 5", Description = "Content of 5", Question = question2 };
-        //var answer6 = new Answer() { CreatedBy = user3, Title = "Answer 6", Description = "Content of Answer 6", Question = question2 };
-        //var answer7 = new Answer() { CreatedBy = user4, Title = "Answer 7", Description = "Content of Answer 7", Question = question2 };
-        //var answer8 = new Answer() { CreatedBy = user5, Title = "Answer 8", Description = "Content of Answer 8", Question = question2 };
-
-        //var answer9 = new Answer() { CreatedBy = user1, Title = "Answer 9", Description = "Content of Answer 9", Question = question3 };
-        //var answer10 = new Answer() { CreatedBy = user3, Title = "Answer 10", Description = "Content of Answer 10", Question = question3 };
-        //var answer11 = new Answer() { CreatedBy = user4, Title = "Answer 11", Description = "Content of Answer 11", Question = question3 };
-        //var answer12 = new Answer() { CreatedBy = user5, Title = "Answer 12", Description = "Content of Answer 12", Question = question3 };
-
-
-        //question2.CorrectAnswer = answer7;
-
-        //_context.Answers.AddRange(answer1, answer2, answer3, answer4, answer5, answer6, answer7, answer8, answer9, answer10, answer11, answer12);
-        //_context.SaveChanges();
-
-        #endregion
-
-        #endregion
-        #endregion
-
+            // tags
+            tagPoolSqlREL = tagNamePool.Select(t => new TagSqlREL() { Name = t }).ToList();
+            _context.TagsSqlREL.AddRange(tagPoolSqlREL);
+            _context.SaveChanges();
+        }
 
     }
 

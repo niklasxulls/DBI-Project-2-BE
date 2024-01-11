@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <Folder Include="Attributes\" />
+      <Folder Include="Entities\MongoFE\" />
       <Folder Include="Factories\" />
     </ItemGroup>
 

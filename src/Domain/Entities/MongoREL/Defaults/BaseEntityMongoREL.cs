@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace stackblob.Domain.Entities.Defaults;
+namespace stackblob.Domain.Entities.MongoREL.Defaults;
 
-public abstract class BaseEntity
+public abstract class BaseEntityMongoREL
 {
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }

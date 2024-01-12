@@ -14,7 +14,7 @@ public class QuestionMongoREL : BaseEntityUserTrackingMongoREL
     public QuestionMongoREL()
     {
         //Tags = new List<QuestionTagMongoREL>();
-        //Answers = new List<AnswerMongoREL>();
+        Answers = new List<AnswerMongoREL>();
     }
     public string QuestionId { get; set; }
 
@@ -23,5 +23,5 @@ public class QuestionMongoREL : BaseEntityUserTrackingMongoREL
 
 
     //public ICollection<QuestionTagMongoREL> Tags { get; set; }
-    //public ICollection<AnswerMongoREL> Answers { get; set; }
+    public ICollection<AnswerMongoREL> Answers { get; set; }
 }

@@ -22,7 +22,7 @@ namespace stackblob.Infrastructure.Persistence.Configurations.MongoREL
                 builder.HasKey(a => a.QuestionId);
 
                 builder.Ignore(a => a.CreatedAt);
-                //builder.Ignore(a => a.Answers);
+                builder.Ignore(a => a.Answers);
                 builder.Ignore(a => a.UpdatedAt);
                 //builder.Ignore(a => a.Tags);
                 builder.Ignore(a => a.CreatedBy);

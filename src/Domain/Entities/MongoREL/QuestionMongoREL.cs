@@ -9,7 +9,7 @@ using stackblob.Domain.Entities.MongoREL.Defaults;
 
 namespace stackblob.Domain.Entities.MongoREL;
 
-public class QuestionMongoREL //: BaseEntityUserTrackingMongoREL
+public class QuestionMongoREL : BaseEntityUserTrackingMongoREL
 {
     public QuestionMongoREL()
     {

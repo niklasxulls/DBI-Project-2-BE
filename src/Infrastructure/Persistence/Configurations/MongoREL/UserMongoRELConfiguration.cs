@@ -21,8 +21,8 @@ public class UserMongoRELConfiguration : IEntityTypeConfiguration<UserMongoREL>
         {
             builder.HasKey(a => a.UserId);
 
-            builder.Ignore(a => a.AnswersCreated);
-            builder.Ignore(a => a.QuestionsCreated);
+            //builder.Ignore(a => a.AnswersCreated);
+            //builder.Ignore(a => a.QuestionsCreated);
             builder.Ignore(a => a.CreatedAt);
             builder.Ignore(a => a.Email);
             builder.Ignore(a => a.Firstname);
@@ -46,11 +46,11 @@ public class UserMongoRELConfiguration : IEntityTypeConfiguration<UserMongoREL>
                 .HasConversion<MongoDbValueConverter>()
                 .ValueGeneratedNever();
 
-        builder.HasMany(a => a.QuestionsCreated)
-               .WithOne(a => a.CreatedBy);
+        //builder.HasMany(a => a.QuestionsCreated)
+        //       .WithOne(a => a.CreatedBy);
 
-        builder.HasMany(a => a.AnswersCreated)
-               .WithOne(a => a.CreatedBy);
+        //builder.HasMany(a => a.AnswersCreated)
+        //       .WithOne(a => a.CreatedBy);
     }
 
 }

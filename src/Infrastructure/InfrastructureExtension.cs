@@ -52,24 +52,29 @@ public static class InfrastructureExtension
 
             var mongoDb = new MongoClient(connectionString).GetDatabase(GlobalUtil.MongoDbName);
 
-            services.AddDbContext<StackblobDbContext>(options =>
+            services.AddDbContext<StackblobMongoRELDbContext>(options =>
                options.UseMongoDB(
                    mongoDb.Client,
                    mongoDb.DatabaseNamespace.DatabaseName
                 )
                );
+
+            services.AddDbContext<StackblobSqlRELDbContext>();
         }
         else
         {
-            services.AddDbContext<StackblobDbContext>(options =>
+            services.AddDbContext<StackblobSqlRELDbContext>(options =>
                 options.UseSqlServer(
                     connectionString,
-                    b => b.MigrationsAssembly(typeof(StackblobDbContext).Assembly.FullName))
+                    b => b.MigrationsAssembly(typeof(StackblobSqlRELDbContext).Assembly.FullName))
                 );
+
+            services.AddDbContext<StackblobMongoRELDbContext>();
         }
 
 
-        services.AddScoped<IStackblobDbContext>(provider => provider.GetRequiredService<StackblobDbContext>());
+        services.AddScoped<IStackblobMongoRELDbContext>(provider => provider.GetRequiredService<StackblobMongoRELDbContext>());
+        services.AddScoped<IStackblobSqlRELDbContext>(provider => provider.GetRequiredService<StackblobSqlRELDbContext>());
 
         services.Configure<AppConfig>(configuration);
 

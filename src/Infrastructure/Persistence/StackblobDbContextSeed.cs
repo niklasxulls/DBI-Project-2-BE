@@ -13,7 +13,7 @@ namespace stackblob.Infrastructure.Persistence;
 
 public static class StackblobDbContextSeed
 {
-    public static async Task SeedSampleData(StackblobDbContext context)
+    public static async Task SeedSampleData(StackblobMongoRELDbContext context)
     {
 
         var questionX = new QuestionMongoREL();

@@ -8,11 +8,11 @@ using stackblob.Domain.Entities.MongoREL.Defaults;
 
 namespace stackblob.Domain.Entities.MongoREL;
 
-public class AnswerMongoREL : BaseEntityUserTrackingMongoREL
+public class AnswerMongoREL //: BaseEntityUserTrackingMongoREL
 {
     public string AnswerId { get; set; }
-    public QuestionMongoREL Question { get; set; } = null!;
-    public string QuestionId { get; set; }
+    //public QuestionMongoREL Question { get; set; } = null!;
+    //public string QuestionId { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 }

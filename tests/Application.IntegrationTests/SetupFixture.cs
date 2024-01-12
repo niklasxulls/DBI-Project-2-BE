@@ -110,7 +110,7 @@ public class SetupFixture : IDisposable
         //only asp net core creates scopes automatically (e.g for every webrequest)
         //-> we have to create scopes our own
         using var scope = _scopeFactory.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<StackblobDbContext>();
+        var context = scope.ServiceProvider.GetRequiredService<StackblobMongoRELDbContext>();
 
         if(!GlobalUtil.IsMongoDb)
         {

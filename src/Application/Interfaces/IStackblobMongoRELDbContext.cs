@@ -11,23 +11,15 @@ using stackblob.Domain.Entities.MongoFE;
 
 namespace stackblob.Application.Interfaces
 {
-    public interface IStackblobDbContext
+    public interface IStackblobMongoRELDbContext
     {
         DbSet<TagMongoREL> TagsMongoREL { get; set; }
         DbSet<QuestionMongoREL> QuestionsMongoREL { get; set; }
         DbSet<AnswerMongoREL> AnswersMongoREL { get; set; }
         DbSet<UserMongoREL> UsersMongoREL { get; set; }
 
-        DbSet<QuestionMongoFE> QuestionsMongoFE { get; set; }
+        //DbSet<QuestionMongoFE> QuestionsMongoFE { get; set; }
 
-
-        DbSet<TagSqlREL> TagsSqlREL { get; set; }
-        DbSet<QuestionSqlREL> QuestionsSqlREL { get; set; }
-        DbSet<AnswerSqlREL> AnswersSqlREL { get; set; }
-        DbSet<UserSqlREL> UsersSqlREL { get; set; }
-
-
-        //DbSet<MongoQuestion> MongoQuestions { get; set; }
 
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);

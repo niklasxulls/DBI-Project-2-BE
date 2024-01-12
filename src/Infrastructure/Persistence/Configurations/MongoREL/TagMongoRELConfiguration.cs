@@ -21,7 +21,7 @@ public class TagMongoRELConfiguration : IEntityTypeConfiguration<TagMongoREL>
             builder.HasKey(r => r.TagId);
 
             builder.Ignore(a => a.Name);
-            builder.Ignore(a => a.Questions);
+            //builder.Ignore(a => a.Questions);
 
             return;
         }
@@ -38,8 +38,8 @@ public class TagMongoRELConfiguration : IEntityTypeConfiguration<TagMongoREL>
                 .HasConversion<MongoDbValueConverter>()
                 .ValueGeneratedNever();
 
-        builder.HasMany(a => a.Questions)
-               .WithOne(a => a.Tag)
-               .HasForeignKey(a => a.TagId);
+        //builder.HasMany(a => a.Questions)
+        //       .WithOne(a => a.Tag)
+        //       .HasForeignKey(a => a.TagId);
     }
 }

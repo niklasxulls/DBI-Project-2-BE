@@ -26,7 +26,7 @@ namespace Rest
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<StackblobDbContext>();
+                    var context = services.GetRequiredService<StackblobMongoRELDbContext>();
 
                     if(!GlobalUtil.IsMongoDb)
                     {

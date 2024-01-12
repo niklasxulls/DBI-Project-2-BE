@@ -11,9 +11,9 @@ public class TagMongoREL
 {
     public TagMongoREL()
     {
-        Questions = new List<QuestionTagMongoREL>();
+        //Questions = new List<QuestionTagMongoREL>();
     }
     public string TagId { get; set; }
     public string Name { get; set; } = string.Empty;
-    public ICollection<QuestionTagMongoREL> Questions { get; set; }
+    //public ICollection<QuestionTagMongoREL> Questions { get; set; }
 }

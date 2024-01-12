@@ -32,7 +32,7 @@ public class TestBase : IAsyncLifetime
 {
     private readonly SetupFixture _setup;
     protected readonly IServiceScope _scope;
-    protected readonly StackblobDbContext _context;
+    protected readonly StackblobMongoRELDbContext _context;
     protected readonly IMapper _mapper;
     protected Dictionary<string, string> UserPasswords = new();
     private UserMongoREL _defaultUser;
@@ -76,7 +76,7 @@ public class TestBase : IAsyncLifetime
     {
         _setup = setup;
         _scope = _setup._scopeFactory.CreateScope();
-        _context = _scope.ServiceProvider.GetRequiredService<StackblobDbContext>();
+        _context = _scope.ServiceProvider.GetRequiredService<StackblobMongoRELDbContext>();
         _mapper = _scope.ServiceProvider.GetRequiredService<IMapper>();
 
 
@@ -105,7 +105,7 @@ public class TestBase : IAsyncLifetime
 
                  a.Description = desc;
                  a.Title = desc.Substring(0, Math.Min(desc.Length, 30));
-                 a.CreatedBy = f.PickRandom(usersPoolMongoREL);
+                 //a.CreatedBy = f.PickRandom(usersPoolMongoREL);
 
              });
 

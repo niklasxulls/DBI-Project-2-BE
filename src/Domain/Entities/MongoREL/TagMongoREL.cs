@@ -9,11 +9,6 @@ namespace stackblob.Domain.Entities.MongoREL;
 
 public class TagMongoREL
 {
-    public TagMongoREL()
-    {
-        //Questions = new List<QuestionTagMongoREL>();
-    }
     public string TagId { get; set; }
     public string Name { get; set; } = string.Empty;
-    public ICollection<string> QuestionTagsIds { get; set; }
 }

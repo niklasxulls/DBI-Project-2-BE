@@ -40,19 +40,19 @@ public class QuestionQueryPerformanceTests : TestBase
 
         foreach (var question in questionFakerMongoREL.Generate(size))
         {
-            _context.QuestionsMongoREL.Add(question);
-            await _context.SaveChangesAsync(default);
+            _mongoContext.QuestionsMongoREL.Add(question);
+            await _mongoContext.SaveChangesAsync(default);
         }
 
         dbStopWatch.Start();
-        await _context.SaveChangesAsync(default);
+        await _mongoContext.SaveChangesAsync(default);
 
         dbStopWatch.Stop();
         testStopwatch.Stop();
 
         var queryStopWatch = Stopwatch.StartNew();
 
-        var questions = await _context.QuestionsMongoREL.Take(100).ToListAsync();
+        var questions = await _mongoContext.QuestionsMongoREL.Take(100).ToListAsync();
 
         queryStopWatch.Stop();
 
@@ -71,19 +71,19 @@ public class QuestionQueryPerformanceTests : TestBase
 
         foreach (var question in questionFakerMongoREL.Generate(size))
         {
-            _context.QuestionsMongoREL.Add(question);
-            await _context.SaveChangesAsync(default);
+            _mongoContext.QuestionsMongoREL.Add(question);
+            await _mongoContext.SaveChangesAsync(default);
         }
 
         dbStopWatch.Start();
-        await _context.SaveChangesAsync(default);
+        await _mongoContext.SaveChangesAsync(default);
 
         dbStopWatch.Stop();
         testStopwatch.Stop();
 
         var queryStopWatch = Stopwatch.StartNew();
 
-        var tagIds = _context.TagsMongoREL.Select(t => t.TagId).Take(2).ToList();
+        var tagIds = _mongoContext.TagsMongoREL.Select(t => t.TagId).Take(2).ToList();
         //var questions = await _context.Questions.Where(a => a.Tags.Any(t => tagIds.Contains(t.TagId))).Take(100).ToListAsync();
 
         queryStopWatch.Stop();

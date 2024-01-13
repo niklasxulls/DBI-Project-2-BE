@@ -10,6 +10,5 @@ namespace stackblob.Domain.Entities.MongoREL.Defaults;
 
 public class BaseEntityUserTrackingMongoREL : BaseEntityMongoREL
 {
-    public UserMongoREL? CreatedBy { get; set; } = null!;
     public string? CreatedById { get; set; }
 }

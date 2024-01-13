@@ -107,15 +107,15 @@ public class SetupFixture : IDisposable
 
     private void CreateDB()
     {
-        //only asp net core creates scopes automatically (e.g for every webrequest)
-        //-> we have to create scopes our own
-        using var scope = _scopeFactory.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<StackblobMongoRELDbContext>();
+        ////only asp net core creates scopes automatically (e.g for every webrequest)
+        ////-> we have to create scopes our own
+        //using var scope = _scopeFactory.CreateScope();
+        //var context = scope.ServiceProvider.GetRequiredService<StackblobMongoRELDbContext>();
 
-        if(!GlobalUtil.IsMongoDb)
-        {
-            context.Database.EnsureCreated();
-        }
+        //if(!GlobalUtil.IsMongoDb)
+        //{
+        //    context.Database.EnsureCreated();
+        //}
     }
 
     public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)

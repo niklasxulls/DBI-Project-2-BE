@@ -29,7 +29,7 @@ public class QuestionSqlRELInsertPerformanceTests : TestBase
         _output = output;
     }
 
-    [SkipIfMongo]
+    [Theory]
     [InlineData(100)]
     [InlineData(1000)]
     [InlineData(100000)]
@@ -40,12 +40,12 @@ public class QuestionSqlRELInsertPerformanceTests : TestBase
 
         foreach (var question in questionFakerSqlREL.Generate(size))
         {
-            _context.QuestionsSqlREL.Add(question);
-            await _context.SaveChangesAsync(default);
+            _sqlContext.QuestionsSqlREL.Add(question);
+            await _mongoContext.SaveChangesAsync(default);
         }
 
         dbStopWatch.Start();
-        await _context.SaveChangesAsync(default);
+        await _sqlContext.SaveChangesAsync(default);
 
         dbStopWatch.Stop();
         testStopwatch.Stop();

@@ -17,22 +17,6 @@ namespace stackblob.Infrastructure.Persistence.Configurations.MongoREL
     {
         public void Configure(EntityTypeBuilder<QuestionMongoREL> builder)
         {
-            if (!GlobalUtil.IsMongoDb)
-            {
-                builder.HasKey(a => a.QuestionId);
-
-                //builder.Ignore(a => a.CreatedAt);
-                //builder.Ignore(a => a.Answers);
-                //builder.Ignore(a => a.UpdatedAt);
-                //builder.Ignore(a => a.Tags);
-                //builder.Ignore(a => a.CreatedBy);
-                //builder.Ignore(a => a.CreatedById);
-                builder.Ignore(a => a.Description);
-                builder.Ignore(a => a.Title);
-
-                return;
-            }
-
             builder.HasKey(a => a.QuestionId);
 
             builder.ToCollection("QUESTION");
@@ -40,18 +24,11 @@ namespace stackblob.Infrastructure.Persistence.Configurations.MongoREL
             builder.Property(a => a.QuestionId)
                     .HasValueGenerator<MongoDbValueGenerator>()
                     .HasConversion<MongoDbValueConverter>()
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasElementName("_id");
 
-            //builder.Property(a => a.CreatedById)
-            //        .HasConversion<MongoDbValueNullableConverter>();
-
-            //builder.HasOne(a => a.CreatedBy)
-            //       .WithMany(a => a.QuestionsCreated)
-            //       .HasForeignKey(a => a.CreatedById);
-
-            //builder.HasMany(a => a.Tags);
-            //       .WithOne(a => a.Question)
-            //       .HasForeignKey(a => a.QuestionId);
+            builder.Property(a => a.CreatedById)
+                    .HasConversion<MongoDbValueNullableConverter>();
         }
     }
 }

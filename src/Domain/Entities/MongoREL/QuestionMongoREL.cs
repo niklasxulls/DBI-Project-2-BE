@@ -9,19 +9,15 @@ using stackblob.Domain.Entities.MongoREL.Defaults;
 
 namespace stackblob.Domain.Entities.MongoREL;
 
-public class QuestionMongoREL //: BaseEntityUserTrackingMongoREL
+public class QuestionMongoREL : BaseEntityUserTrackingMongoREL
 {
     public QuestionMongoREL()
     {
-        //Tags = new List<QuestionTagMongoREL>();
-        //Answers = new List<AnswerMongoREL>();
+        TagIds = new List<string>();
     }
-    public string QuestionId { get; set; }
 
+    public string QuestionId { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-
-
-    public ICollection<string> QuestionTagsIds { get; set; }
-    //public ICollection<AnswerMongoREL> Answers { get; set; }
+    public ICollection<string> TagIds { get; set; }
 }

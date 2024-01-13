@@ -16,22 +16,6 @@ public class AnswerMongoRELConfiguration : IEntityTypeConfiguration<AnswerMongoR
 {
     public void Configure(EntityTypeBuilder<AnswerMongoREL> builder)
     {
-        if (!GlobalUtil.IsMongoDb)
-        {
-            builder.HasKey(a => a.AnswerId);
-
-            //builder.Ignore(a => a.CreatedAt);
-            //builder.Ignore(a => a.UpdatedAt);
-            //builder.Ignore(a => a.Question);
-            builder.Ignore(a => a.QuestionId);
-            //builder.Ignore(a => a.CreatedBy);
-            //builder.Ignore(a => a.CreatedById);
-            builder.Ignore(a => a.Description);
-            builder.Ignore(a => a.Title);
-
-            return;
-        }
-
         builder.HasKey(a => a.AnswerId);
 
         builder.ToCollection("ANSWER");
@@ -39,20 +23,14 @@ public class AnswerMongoRELConfiguration : IEntityTypeConfiguration<AnswerMongoR
         builder.Property(a => a.AnswerId)
                 .HasValueGenerator<MongoDbValueGenerator>()
                 .HasConversion<MongoDbValueConverter>()
-                .ValueGeneratedNever();
+                .ValueGeneratedNever()
+                .HasElementName("_id");
 
         builder.Property(a => a.QuestionId)
                 .HasConversion<MongoDbValueConverter>();
 
-        //builder.Property(a => a.CreatedById)
-        //        .HasConversion<MongoDbValueNullableConverter>();
+        builder.Property(a => a.CreatedById)
+                .HasConversion<MongoDbValueNullableConverter>();
 
-        //builder.HasOne(v => v.Question)
-        //       .WithMany(q => q.Answers)
-        //       .HasForeignKey(v => v.QuestionId);
-
-        //builder.HasOne(a => a.CreatedBy)
-        //       .WithMany(a => a.AnswersCreated)
-        //       .HasForeignKey(a => a.CreatedById);
     }
 }

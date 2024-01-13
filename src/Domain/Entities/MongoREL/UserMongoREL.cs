@@ -12,12 +12,6 @@ namespace stackblob.Domain.Entities.MongoREL;
 
 public class UserMongoREL : BaseEntityMongoREL
 {
-    public UserMongoREL()
-    {
-        //QuestionsCreated = new List<QuestionMongoREL>();
-        //AnswersCreated = new List<AnswerMongoREL>();
-    }
-
     public string UserId { get; set; }
     public string Firstname { get; set; } = string.Empty;
     public string Lastname { get; set; } = string.Empty;
@@ -26,7 +20,4 @@ public class UserMongoREL : BaseEntityMongoREL
     public string Password { get; set; } = string.Empty;
     public string Salt { get; set; } = string.Empty;
     public string? StatusText { get; set; }
-
-    //public ICollection<QuestionMongoREL> QuestionsCreated { get; set; }
-    //public ICollection<AnswerMongoREL> AnswersCreated { get; set; }
 }

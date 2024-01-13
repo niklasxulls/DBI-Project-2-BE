@@ -26,14 +26,14 @@ namespace Rest
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<StackblobMongoRELDbContext>();
+                    //var context = services.GetRequiredService<StackblobMongoRELDbContext>();
 
-                    if(!GlobalUtil.IsMongoDb)
-                    {
-                        context.Database.EnsureCreated();
-                    }
+                    //if(!GlobalUtil.IsMongoDb)
+                    //{
+                    //    context.Database.EnsureCreated();
+                    //}
 
-                    await StackblobDbContextSeed.SeedSampleData(context);
+                    //await StackblobDbContextSeed.SeedSampleData(context);
                 }
                 catch(Exception e)
                 {

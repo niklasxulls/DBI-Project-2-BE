@@ -65,7 +65,10 @@ public class StackblobMongoRELDbContext : DbContext, IStackblobMongoRELDbContext
     {
         var assembly = Assembly.GetExecutingAssembly();
 
-        builder.ApplyConfigurationsFromAssembly(assembly);
+        builder.ApplyConfiguration(new UserMongoRELConfiguration());
+        builder.ApplyConfiguration(new QuestionMongoRELConfiguration());
+        builder.ApplyConfiguration(new AnswerMongoRELConfiguration());
+        builder.ApplyConfiguration(new TagMongoRELConfiguration());
 
         base.OnModelCreating(builder);
     }

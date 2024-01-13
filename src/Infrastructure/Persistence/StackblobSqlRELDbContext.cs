@@ -64,7 +64,11 @@ public class StackblobSqlRELDbContext : DbContext, IStackblobSqlRELDbContext
     {
         var assembly = Assembly.GetExecutingAssembly();
 
-        builder.ApplyConfigurationsFromAssembly(assembly);
+        builder.ApplyConfiguration(new UserSqlRELConfiguration());
+        builder.ApplyConfiguration(new QuestionSqlRELConfiguration());
+        builder.ApplyConfiguration(new AnswerSqlRELConfiguration());
+        builder.ApplyConfiguration(new TagSqlRELConfiguration());
+        builder.ApplyConfiguration(new QuestionTagSqlRELConfiguration());
 
         base.OnModelCreating(builder);
     }

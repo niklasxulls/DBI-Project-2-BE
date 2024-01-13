@@ -8,10 +8,11 @@ using MongoDB.Bson;
 
 namespace stackblob.Domain.Entities.MongoREL;
 
-//public class QuestionTagMongoREL
-//{
-//    public string QuestionId { get; set; }
-//    public QuestionMongoREL Question { get; set; }
-//    public string TagId { get; set; }
-//    public TagMongoREL Tag { get; set; }
-//}
+public class QuestionTagMongoREL
+{
+    public string QuestionTagId { get; set; }
+    public string QuestionId { get; set; }
+    public QuestionMongoREL Question { get; set; }
+    public string TagId { get; set; }
+    public TagMongoREL Tag { get; set; }
+}

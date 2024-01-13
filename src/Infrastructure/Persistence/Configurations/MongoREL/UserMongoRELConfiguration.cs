@@ -46,8 +46,8 @@ public class UserMongoRELConfiguration : IEntityTypeConfiguration<UserMongoREL>
                 .HasConversion<MongoDbValueConverter>()
                 .ValueGeneratedNever();
 
-        builder.HasMany(a => a.QuestionsCreated)
-               .WithOne(a => a.CreatedBy);
+        //builder.HasMany(a => a.QuestionsCreated)
+        //       .WithOne(a => a.CreatedBy);
 
         //builder.HasMany(a => a.AnswersCreated)
         //       .WithOne(a => a.CreatedBy);

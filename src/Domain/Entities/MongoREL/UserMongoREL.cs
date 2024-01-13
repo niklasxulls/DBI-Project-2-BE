@@ -14,7 +14,7 @@ public class UserMongoREL : BaseEntityMongoREL
 {
     public UserMongoREL()
     {
-        QuestionsCreated = new List<QuestionMongoREL>();
+        //QuestionsCreated = new List<QuestionMongoREL>();
         //AnswersCreated = new List<AnswerMongoREL>();
     }
 
@@ -27,6 +27,6 @@ public class UserMongoREL : BaseEntityMongoREL
     public string Salt { get; set; } = string.Empty;
     public string? StatusText { get; set; }
 
-    public ICollection<QuestionMongoREL> QuestionsCreated { get; set; }
+    //public ICollection<QuestionMongoREL> QuestionsCreated { get; set; }
     //public ICollection<AnswerMongoREL> AnswersCreated { get; set; }
 }

@@ -15,5 +15,5 @@ public class TagMongoREL
     }
     public string TagId { get; set; }
     public string Name { get; set; } = string.Empty;
-    //public ICollection<QuestionTagMongoREL> Questions { get; set; }
+    public ICollection<string> QuestionTagsIds { get; set; }
 }

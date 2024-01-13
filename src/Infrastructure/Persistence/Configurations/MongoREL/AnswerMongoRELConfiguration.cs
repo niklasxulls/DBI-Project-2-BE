@@ -22,7 +22,7 @@ public class AnswerMongoRELConfiguration : IEntityTypeConfiguration<AnswerMongoR
 
             //builder.Ignore(a => a.CreatedAt);
             //builder.Ignore(a => a.UpdatedAt);
-            builder.Ignore(a => a.Question);
+            //builder.Ignore(a => a.Question);
             builder.Ignore(a => a.QuestionId);
             //builder.Ignore(a => a.CreatedBy);
             //builder.Ignore(a => a.CreatedById);
@@ -47,9 +47,9 @@ public class AnswerMongoRELConfiguration : IEntityTypeConfiguration<AnswerMongoR
         //builder.Property(a => a.CreatedById)
         //        .HasConversion<MongoDbValueNullableConverter>();
 
-        builder.HasOne(v => v.Question)
-               .WithMany(q => q.Answers)
-               .HasForeignKey(v => v.QuestionId);
+        //builder.HasOne(v => v.Question)
+        //       .WithMany(q => q.Answers)
+        //       .HasForeignKey(v => v.QuestionId);
 
         //builder.HasOne(a => a.CreatedBy)
         //       .WithMany(a => a.AnswersCreated)

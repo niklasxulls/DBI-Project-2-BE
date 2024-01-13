@@ -38,7 +38,7 @@ public class TagMongoRELConfiguration : IEntityTypeConfiguration<TagMongoREL>
                 .HasConversion<MongoDbValueConverter>()
                 .ValueGeneratedNever();
 
-        //builder.HasMany(a => a.Questions)
+        //builder.HasMany(a => a.Questions);
         //       .WithOne(a => a.Tag)
         //       .HasForeignKey(a => a.TagId);
     }

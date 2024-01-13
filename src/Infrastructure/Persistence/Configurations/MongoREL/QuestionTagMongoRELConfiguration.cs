@@ -11,40 +11,41 @@ using MongoDB.EntityFrameworkCore.Extensions;
 using stackblob.Infrastructure.Persistence.Configurations._Base;
 using stackblob.Domain.Entities.MongoREL;
 
-namespace stackblob.Infrastructure.Persistence.Configurations.MongoREL
+namespace stackblob.Infrastructure.Persistence.Configurations.MongoREL;
+
+public class QuestionTagMongoRELConfiguration : IEntityTypeConfiguration<QuestionTagMongoREL>
 {
-    //public class QuestionTagMongoRELConfiguration : IEntityTypeConfiguration<QuestionTagMongoREL>
-    //{
-    //    public void Configure(EntityTypeBuilder<QuestionTagMongoREL> builder)
-    //    {
-    //        if (!GlobalUtil.IsMongoDb)
-    //        {
-    //            builder.HasKey(a => new { a.QuestionId, a.TagId });
+    public void Configure(EntityTypeBuilder<QuestionTagMongoREL> builder)
+    {
+        if (!GlobalUtil.IsMongoDb)
+        {
+            builder.HasKey(a => a.QuestionTagId);
 
-    //            builder.Ignore(a => a.Question);
-    //            builder.Ignore(a => a.Tag);
+            builder.Ignore(a => a.Question);
+            builder.Ignore(a => a.Tag);
 
-    //            return;
-    //        }
+            return;
+        }
 
-    //        builder.HasKey(a => new { a.QuestionId, a.TagId });
+        builder.Property(a => a.QuestionTagId)
+                .HasValueGenerator<MongoDbValueGenerator>()
+                .HasConversion<MongoDbValueConverter>()
+                .ValueGeneratedNever();
 
-    //        builder.ToCollection("QUESTION_TAG");
+        builder.ToCollection("QUESTION_TAG");
 
-    //        builder.Property(a => a.QuestionId)
-    //                .HasConversion<MongoDbValueConverter>();
+        builder.Property(a => a.QuestionId)
+                .HasConversion<MongoDbValueConverter>();
 
-    //        builder.Property(a => a.TagId)
-    //                .HasConversion<MongoDbValueConverter>();
+        builder.Property(a => a.TagId)
+                .HasConversion<MongoDbValueConverter>();
 
+        builder.HasOne(r => r.Question);
+        //.WithMany(r => r.Tags)
+        //.(a => a.QuestionId);
 
-    //        builder.HasOne(r => r.Question)
-    //               .WithMany(r => r.Tags)
-    //               .HasForeignKey(a => a.QuestionId);
-
-    //        builder.HasOne(r => r.Tag)
-    //               .WithMany(r => r.Questions)
-    //               .HasForeignKey(a => a.TagId);
-    //    }
-    //}
+        builder.HasOne(r => r.Tag);
+               //.WithMany(r => r.Questions)
+               //.HasForeignKey(a => a.TagId);
+    }
 }

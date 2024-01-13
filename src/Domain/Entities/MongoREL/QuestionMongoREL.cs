@@ -9,12 +9,12 @@ using stackblob.Domain.Entities.MongoREL.Defaults;
 
 namespace stackblob.Domain.Entities.MongoREL;
 
-public class QuestionMongoREL : BaseEntityUserTrackingMongoREL
+public class QuestionMongoREL //: BaseEntityUserTrackingMongoREL
 {
     public QuestionMongoREL()
     {
         //Tags = new List<QuestionTagMongoREL>();
-        Answers = new List<AnswerMongoREL>();
+        //Answers = new List<AnswerMongoREL>();
     }
     public string QuestionId { get; set; }
 
@@ -22,6 +22,6 @@ public class QuestionMongoREL : BaseEntityUserTrackingMongoREL
     public string Description { get; set; } = string.Empty;
 
 
-    //public ICollection<QuestionTagMongoREL> Tags { get; set; }
-    public ICollection<AnswerMongoREL> Answers { get; set; }
+    public ICollection<string> QuestionTagsIds { get; set; }
+    //public ICollection<AnswerMongoREL> Answers { get; set; }
 }

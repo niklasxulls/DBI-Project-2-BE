@@ -32,45 +32,28 @@ public static class InfrastructureExtension
         *  Configure EF
         */
 
-        var connectionString = "";
-#if DEBUG
-        connectionString = configuration.GetConnectionString("DevConnection");
-#else
-        connectionString = configuration.GetConnectionString("DefaultConnection");
-#endif
+        var mongoConnectionString = configuration.GetConnectionString("MongoConnection") ?? "";
+        var sqlConnectionString = configuration.GetConnectionString("SqlConnection") ?? "";
 
-        GlobalUtil.ConnectionString = connectionString;
+        GlobalUtil.ConnectionString = mongoConnectionString;
 
-        if (configuration.GetValue<bool>("IsMongoDb"))
-        {
-            GlobalUtil.IsMongoDb = true;
-        }
 
-        if (GlobalUtil.IsMongoDb)
-        {
-            GlobalUtil.MongoDbName = configuration.GetConnectionString("DBName") ?? "";
+        GlobalUtil.MongoDbName = configuration.GetConnectionString("DBName") ?? "";
 
-            var mongoDb = new MongoClient(connectionString).GetDatabase(GlobalUtil.MongoDbName);
+        var mongoDb = new MongoClient(mongoConnectionString).GetDatabase(GlobalUtil.MongoDbName);
 
-            services.AddDbContext<StackblobMongoRELDbContext>(options =>
-               options.UseMongoDB(
-                   mongoDb.Client,
-                   mongoDb.DatabaseNamespace.DatabaseName
-                )
-               );
+        services.AddDbContext<StackblobMongoRELDbContext>(options =>
+            options.UseMongoDB(
+                mongoDb.Client,
+                mongoDb.DatabaseNamespace.DatabaseName
+            )
+        );
 
-            services.AddDbContext<StackblobSqlRELDbContext>();
-        }
-        else
-        {
-            services.AddDbContext<StackblobSqlRELDbContext>(options =>
-                options.UseSqlServer(
-                    connectionString,
-                    b => b.MigrationsAssembly(typeof(StackblobSqlRELDbContext).Assembly.FullName))
-                );
-
-            services.AddDbContext<StackblobMongoRELDbContext>();
-        }
+        services.AddDbContext<StackblobSqlRELDbContext>(options =>
+            options.UseSqlServer(
+                sqlConnectionString,
+                b => b.MigrationsAssembly(typeof(StackblobSqlRELDbContext).Assembly.FullName))
+            );
 
 
         services.AddScoped<IStackblobMongoRELDbContext>(provider => provider.GetRequiredService<StackblobMongoRELDbContext>());

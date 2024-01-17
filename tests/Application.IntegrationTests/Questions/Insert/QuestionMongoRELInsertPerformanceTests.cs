@@ -17,14 +17,14 @@ using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace stackblob.stackblob.Application.IntegrationTests.Questions.Queries;
+namespace Questions.Inserts;
 
 
 public class QuestionMongoRELInsertPerformanceTests : TestBase
 {
     private readonly ITestOutputHelper _output;
 
-    public QuestionMongoRELInsertPerformanceTests(SetupFixture setup, ITestOutputHelper output ) : base(setup)
+    public QuestionMongoRELInsertPerformanceTests(SetupFixture setup, ITestOutputHelper output) : base(setup)
     {
         _output = output;
     }
@@ -35,23 +35,26 @@ public class QuestionMongoRELInsertPerformanceTests : TestBase
     [InlineData(100000)]
     public async Task Should_Test_Insert_Performance(int size)
     {
+        // create records
         var testStopwatch = Stopwatch.StartNew();
-        var dbStopWatch = Stopwatch.StartNew();
+        var dbStopWatch = new Stopwatch();
 
         foreach (var question in questionFakerMongoREL.Generate(size))
         {
             _mongoContext.QuestionsMongoREL.Add(question);
-            await _mongoContext.SaveChangesAsync(default);
         }
 
+        testStopwatch.Stop();
+
+        // add to db
         dbStopWatch.Start();
+
         await _mongoContext.SaveChangesAsync(default);
 
         dbStopWatch.Stop();
-        testStopwatch.Stop();
 
-        _output.WriteLine(string.Format("Inserting Test for {0} entries took {1}ms", size, testStopwatch.ElapsedMilliseconds));
-        _output.WriteLine(string.Format("Inserting {0} entries in DB took {1}ms", size, dbStopWatch.ElapsedMilliseconds));
-
+        // log
+        _output.WriteLine(string.Format("Creating Test records for {0} entries took {1}ms", size, testStopwatch.ElapsedMilliseconds));
+        _output.WriteLine(string.Format("Inserting {0} entries in MongoDB took {1}ms", size, dbStopWatch.ElapsedMilliseconds));
     }
 }

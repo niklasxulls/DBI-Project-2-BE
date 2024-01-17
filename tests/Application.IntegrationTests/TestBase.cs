@@ -24,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 using TagMongoREL = stackblob.Domain.Entities.MongoREL.TagMongoREL;
 using stackblob.Domain.Entities.MongoREL;
 using stackblob.Domain.Entities.SqlREL;
+using stackblob.Domain.Entities.MongoFE;
 
 namespace Application.IntegrationTests;
 
@@ -67,8 +68,21 @@ public class TestBase : IAsyncLifetime
 
     protected Faker<AnswerMongoREL> answerFakerMongoREL { get; set; }
     protected Faker<QuestionMongoREL> questionFakerMongoREL { get; set; }
+
+
     public ICollection<TagMongoREL> tagPoolMongoREL { get; set; }
     public ICollection<UserMongoREL> usersPoolMongoREL { get; set; }
+
+
+    /*
+    * Mongo FE faker 
+    */
+    protected Faker<QuestionMongoREL> questionFakerMongoFE { get; set; }
+
+
+    public ICollection<TagMongoREL> tagPoolMongoFE { get; set; }
+    public ICollection<UserMongoREL> usersPoolMongoFE { get; set; }
+
 
 
     /*
@@ -122,16 +136,37 @@ public class TestBase : IAsyncLifetime
                 s.TagIds.AddRange(tags.Select(t => t.TagId));
             });
 
+
+
+        /*
+        * Mongo FE
+        */
+        questionFakerMongoFE = new Faker<QuestionMongoFE>()
+            .Rules((f, s) =>
+            {
+                s.Title = f.PickRandom(questionTitlePool);
+                s.Description = f.PickRandom(questionTitlePool);
+                s.Answers = answerFakerMongoREL.GenerateBetween(1, 3).ToList();
+                s.CreatedById = f.PickRandom(usersPoolMongoREL).UserId;
+
+                var tags = f.PickRandom(tagPoolMongoREL, new Random().Next(1, 5)).ToList();
+
+                s.TagIds.AddRange(tags.Select(t => t.TagId));
+            });
+
+
+        /*
+        * Clear MONGO DB
+        **/
         var client = new MongoClient(GlobalUtil.ConnectionString);
 
         var database = client.GetDatabase(GlobalUtil.MongoDbName);
 
         var allCollections = database.ListCollectionNames();
-
-
         allCollections.MoveNext();
 
-        foreach(var collection in allCollections.Current) { 
+        foreach (var collection in allCollections.Current)
+        {
             database.DropCollection(collection);
         }
 

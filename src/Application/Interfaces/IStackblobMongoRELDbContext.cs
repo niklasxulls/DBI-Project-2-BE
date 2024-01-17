@@ -18,8 +18,6 @@ namespace stackblob.Application.Interfaces
         DbSet<AnswerMongoREL> AnswersMongoREL { get; set; }
         DbSet<UserMongoREL> UsersMongoREL { get; set; }
 
-        //DbSet<QuestionMongoFE> QuestionsMongoFE { get; set; }
-
 
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);

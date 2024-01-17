@@ -63,9 +63,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Answers\Commands\" />
-      <Folder Include="Answers\Queries\" />
-      <Folder Include="Questions\Commands\" />
+      <Folder Include="Questions\Update\" />
     </ItemGroup>
 
 </Project>

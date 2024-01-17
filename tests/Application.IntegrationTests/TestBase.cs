@@ -77,11 +77,14 @@ public class TestBase : IAsyncLifetime
     /*
     * Mongo FE faker 
     */
-    protected Faker<QuestionMongoREL> questionFakerMongoFE { get; set; }
+    public readonly string QUESTION_COLLECTION_NAME = "QUESTION_FE";
+    protected IMongoDatabase _mongoDB { get; set; }
 
-
-    public ICollection<TagMongoREL> tagPoolMongoFE { get; set; }
-    public ICollection<UserMongoREL> usersPoolMongoFE { get; set; }
+    protected Faker<QuestionMongoFE> questionFakerMongoFE { get; set; }
+    protected Faker<QuestionAnswerMongoFE> answerFakerMongoFE { get; set; }
+    public Faker<QuestionUserMongoFE> questionUserFakerMongoFE { get; set; }
+    
+    public ICollection<QuestionTagMongoFE> tagPoolMongoFE { get; set; }
 
 
 
@@ -141,33 +144,61 @@ public class TestBase : IAsyncLifetime
         /*
         * Mongo FE
         */
+        var client = new MongoClient(GlobalUtil.ConnectionString);
+        _mongoDB = client.GetDatabase(GlobalUtil.MongoDbName);
+
+
+
+        questionUserFakerMongoFE = new Faker<QuestionUserMongoFE>()
+            .Rules((f, a) =>
+            {
+                a.Email = f.Person.Email;
+                a.Name = f.Person.FullName;
+                a.UserId = ObjectId.GenerateNewId();
+            });
+
+        var questionUserPoolMongoFE = questionUserFakerMongoFE.Generate(20);
+
+        tagPoolMongoFE = tagNamePool.Select(t => new QuestionTagMongoFE() {
+            Name = t,
+            TagId = ObjectId.GenerateNewId(),
+        }).ToList();
+
+        answerFakerMongoFE = new Faker<QuestionAnswerMongoFE>()
+            .Rules((f, a) =>
+            {
+                var desc = f.PickRandom(answerDescPool);
+
+                a.AnswerId = ObjectId.GenerateNewId();
+                a.Description = desc;
+                a.Title = desc.Substring(0, Math.Min(desc.Length, 30));
+                a.CreatedBy = f.PickRandom(questionUserPoolMongoFE);
+
+            });
+
+
         questionFakerMongoFE = new Faker<QuestionMongoFE>()
             .Rules((f, s) =>
             {
                 s.Title = f.PickRandom(questionTitlePool);
                 s.Description = f.PickRandom(questionTitlePool);
-                s.Answers = answerFakerMongoREL.GenerateBetween(1, 3).ToList();
-                s.CreatedById = f.PickRandom(usersPoolMongoREL).UserId;
+                s.Answers = answerFakerMongoFE.GenerateBetween(1, 3).ToList();
+                s.CreatedBy = f.PickRandom(questionUserPoolMongoFE);
 
-                var tags = f.PickRandom(tagPoolMongoREL, new Random().Next(1, 5)).ToList();
-
-                s.TagIds.AddRange(tags.Select(t => t.TagId));
+                var tags = f.PickRandom(tagPoolMongoFE, new Random().Next(1, 5)).ToList();
+                s.Tags = tags;
             });
 
 
         /*
         * Clear MONGO DB
         **/
-        var client = new MongoClient(GlobalUtil.ConnectionString);
-
-        var database = client.GetDatabase(GlobalUtil.MongoDbName);
-
-        var allCollections = database.ListCollectionNames();
+        var allCollections = _mongoDB.ListCollectionNames();
         allCollections.MoveNext();
 
         foreach (var collection in allCollections.Current)
         {
-            database.DropCollection(collection);
+            _mongoDB.DropCollection(collection);
         }
 
 

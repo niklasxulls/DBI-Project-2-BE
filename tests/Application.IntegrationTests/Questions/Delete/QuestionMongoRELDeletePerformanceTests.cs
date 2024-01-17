@@ -17,14 +17,14 @@ using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace Questions.Insert;
+namespace Questions.Delete;
 
 
-public class QuestionMongoRELInsertPerformanceTests : TestBase
+public class QuestionMongoRELDeletePerformanceTests : TestBase
 {
     private readonly ITestOutputHelper _output;
 
-    public QuestionMongoRELInsertPerformanceTests(SetupFixture setup, ITestOutputHelper output) : base(setup)
+    public QuestionMongoRELDeletePerformanceTests(SetupFixture setup, ITestOutputHelper output) : base(setup)
     {
         _output = output;
     }
@@ -33,18 +33,20 @@ public class QuestionMongoRELInsertPerformanceTests : TestBase
     [InlineData(100)]
     [InlineData(1000)]
     [InlineData(100000)]
-    public async Task Should_Test_Insert_Performance(int size)
+    public async Task Should_Test_Delete_Performance(int size)
     {
-        // create records
-        var testStopwatch = Stopwatch.StartNew();
-        var dbStopWatch = new Stopwatch();
-
+        // create records (prepare)
         foreach (var question in questionFakerMongoREL.Generate(size))
         {
             _mongoContext.QuestionsMongoREL.Add(question);
         }
+        await _sqlContext.SaveChangesAsync(default);
 
-        testStopwatch.Stop();
+        var dbStopWatch = new Stopwatch();
+
+        // gather entries
+        var questions = await _mongoContext.QuestionsMongoREL.ToListAsync();
+        _mongoContext.QuestionsMongoREL.RemoveRange(questions);
 
         // add to db
         dbStopWatch.Start();
@@ -54,7 +56,6 @@ public class QuestionMongoRELInsertPerformanceTests : TestBase
         dbStopWatch.Stop();
 
         // log
-        _output.WriteLine(string.Format("Creating Test records for {0} entries took {1}ms", size, testStopwatch.ElapsedMilliseconds));
-        _output.WriteLine(string.Format("Inserting {0} entries in MongoDB took {1}ms", size, dbStopWatch.ElapsedMilliseconds));
+        _output.WriteLine(string.Format("Deleting {0} entries in MongoDB took {1}ms", size, dbStopWatch.ElapsedMilliseconds));
     }
 }

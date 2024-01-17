@@ -35,3 +35,15 @@ public class MongoDbValueNullableConverter : ValueConverter<string?, ObjectId?>
     {
     }
 }
+
+
+public class MongoDbValueGeneratorX : ValueGenerator<ObjectId>
+{
+    public override bool GeneratesTemporaryValues { get; }
+
+    public override ObjectId Next(EntityEntry entry)
+    {
+        return ObjectId.GenerateNewId();
+    }
+}
+

@@ -9,10 +9,13 @@ using BenchmarkDotNet.Attributes;
 using Bogus;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using NuGet.Packaging;
 using stackblob.Application.Exceptions;
 using stackblob.Application.Models;
 using stackblob.Domain.Entities;
+using stackblob.Domain.Entities.MongoFE;
+using stackblob.Domain.Settings;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
@@ -20,11 +23,11 @@ using Xunit.Sdk;
 namespace Questions.Insert;
 
 
-public class QuestionMongoRELInsertPerformanceTests : TestBase
+public class QuestionMongoFEInsertPerformanceTests : TestBase
 {
     private readonly ITestOutputHelper _output;
 
-    public QuestionMongoRELInsertPerformanceTests(SetupFixture setup, ITestOutputHelper output) : base(setup)
+    public QuestionMongoFEInsertPerformanceTests(SetupFixture setup, ITestOutputHelper output) : base(setup)
     {
         _output = output;
     }
@@ -39,17 +42,16 @@ public class QuestionMongoRELInsertPerformanceTests : TestBase
         var testStopwatch = Stopwatch.StartNew();
         var dbStopWatch = new Stopwatch();
 
-        foreach (var question in questionFakerMongoREL.Generate(size))
-        {
-            _mongoContext.QuestionsMongoREL.Add(question);
-        }
+        var questionsMongoFE = questionFakerMongoFE.Generate(size);
+
+
 
         testStopwatch.Stop();
 
         // add to db
         dbStopWatch.Start();
 
-        await _mongoContext.SaveChangesAsync(default);
+        _mongoDB.GetCollection<QuestionMongoFE>(QUESTION_COLLECTION_NAME).InsertMany(questionsMongoFE);
 
         dbStopWatch.Stop();
 

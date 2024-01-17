@@ -20,6 +20,7 @@ using System.Xml;
 using stackblob.Infrastructure.Persistence.Configurations.MongoREL;
 using stackblob.Infrastructure.Persistence.Configurations.SqlREL;
 using stackblob.Domain.Entities.MongoFE;
+using stackblob.Infrastructure.Persistence.Configurations.MongoFE;
 
 namespace stackblob.Infrastructure.Persistence;
 
@@ -32,8 +33,6 @@ public class StackblobMongoRELDbContext : DbContext, IStackblobMongoRELDbContext
     public DbSet<QuestionMongoREL> QuestionsMongoREL { get; set; } = null!;
     public DbSet<AnswerMongoREL> AnswersMongoREL { get; set; } = null!;
     public DbSet<UserMongoREL> UsersMongoREL { get; set; }
-
-    //public DbSet<QuestionMongoFE> QuestionsMongoFE { get; set; }
 
 
     public StackblobMongoRELDbContext(DbContextOptions<StackblobMongoRELDbContext> options, IOptions<ConnectionStringOptions> connectionStringOptions, ICurrentUserService currentUser) : base(options)
@@ -69,6 +68,7 @@ public class StackblobMongoRELDbContext : DbContext, IStackblobMongoRELDbContext
         builder.ApplyConfiguration(new QuestionMongoRELConfiguration());
         builder.ApplyConfiguration(new AnswerMongoRELConfiguration());
         builder.ApplyConfiguration(new TagMongoRELConfiguration());
+
 
         base.OnModelCreating(builder);
     }

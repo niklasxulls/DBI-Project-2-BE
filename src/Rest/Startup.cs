@@ -11,6 +11,7 @@ using Newtonsoft.Json.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using stackblob.Rest.Swagger;
+using MongoDB.Bson;
 
 namespace Rest;
 
@@ -35,6 +36,7 @@ public class Startup
 
             options.JsonSerializerOptions.PropertyNamingPolicy = null;
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            options.JsonSerializerOptions.Converters.Add(new ObjectIdJsonConverter());
         });
 
         services.AddScoped<ICurrentUserService, CurrentUserService>();
@@ -126,5 +128,20 @@ public class Startup
         {
             endpoints.MapControllers();
         });
+    }
+}
+
+
+public class ObjectIdJsonConverter : System.Text.Json.Serialization.JsonConverter<ObjectId>
+{
+    public override ObjectId Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        string value = reader.GetString();
+        return string.IsNullOrEmpty(value) ? ObjectId.Empty : new ObjectId(value);
+    }
+
+    public override void Write(Utf8JsonWriter writer, ObjectId objectId, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(objectId.ToString());
     }
 }

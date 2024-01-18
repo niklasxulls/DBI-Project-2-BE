@@ -77,7 +77,9 @@ public class TestBase : IAsyncLifetime
     /*
     * Mongo FE faker 
     */
-    public readonly string QUESTION_COLLECTION_NAME = "QUESTION_FE";
+    public readonly string QUESTIONFE_COLLECTION_NAME = "QUESTION_FE";
+    public readonly string QUESTIONREL_COLLECTION_NAME = "QUESTION";
+
     protected IMongoDatabase _mongoDB { get; set; }
 
     protected Faker<QuestionMongoFE> questionFakerMongoFE { get; set; }
@@ -85,6 +87,7 @@ public class TestBase : IAsyncLifetime
     public Faker<QuestionUserMongoFE> questionUserFakerMongoFE { get; set; }
     
     public ICollection<QuestionTagMongoFE> tagPoolMongoFE { get; set; }
+    public ICollection<QuestionUserMongoFE> questionUserPoolMongoFE { get; set; }
 
 
 
@@ -157,7 +160,7 @@ public class TestBase : IAsyncLifetime
                 a.UserId = ObjectId.GenerateNewId();
             });
 
-        var questionUserPoolMongoFE = questionUserFakerMongoFE.Generate(20);
+        questionUserPoolMongoFE = questionUserFakerMongoFE.Generate(20);
 
         tagPoolMongoFE = tagNamePool.Select(t => new QuestionTagMongoFE() {
             Name = t,

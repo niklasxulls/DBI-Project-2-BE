@@ -9,6 +9,7 @@ using BenchmarkDotNet.Attributes;
 using Bogus;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using NuGet.Packaging;
 using stackblob.Application.Exceptions;
@@ -20,14 +21,14 @@ using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace Questions.Insert;
+namespace Questions.Update;
 
 
-public class QuestionMongoFEInsertPerformanceTests : TestBase
+public class QuestionMongoFEUpdatePerformanceTests : TestBase
 {
     private readonly ITestOutputHelper _output;
 
-    public QuestionMongoFEInsertPerformanceTests(SetupFixture setup, ITestOutputHelper output) : base(setup)
+    public QuestionMongoFEUpdatePerformanceTests(SetupFixture setup, ITestOutputHelper output) : base(setup)
     {
         _output = output;
     }
@@ -36,27 +37,28 @@ public class QuestionMongoFEInsertPerformanceTests : TestBase
     [InlineData(100)]
     [InlineData(1000)]
     [InlineData(100000)]
-    public async Task Should_Test_Insert_Performance(int size)
+    public async Task Should_Test_Update_Performance(int size)
     {
-        // create records
-        var testStopwatch = Stopwatch.StartNew();
-        var dbStopWatch = new Stopwatch();
-
+        // create records (prepare)
         var questionsMongoFE = questionFakerMongoFE.Generate(size);
 
+        var collection = _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_COLLECTION_NAME);
+        collection.InsertMany(questionsMongoFE);
 
+        var dbStopWatch = new Stopwatch();
 
-        testStopwatch.Stop();
+        // build query
+        var update = Builders<QuestionMongoFE>.Update.Set($"{nameof(QuestionMongoFE.Title)}", "UPDATED TITLE");
 
-        // add to db
+        // update
         dbStopWatch.Start();
 
-        _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_COLLECTION_NAME).InsertMany(questionsMongoFE);
+        // Perform the update operation
+        var result = await collection.UpdateManyAsync(t => true, update);
 
         dbStopWatch.Stop();
 
         // log
-        _output.WriteLine(string.Format("Creating Test records for {0} entries took {1}ms", size, testStopwatch.ElapsedMilliseconds));
-        _output.WriteLine(string.Format("Inserting {0} entries in MongoDB took {1}ms", size, dbStopWatch.ElapsedMilliseconds));
+        _output.WriteLine(string.Format("Updating {0} entries in MongoDB took {1}ms", size, dbStopWatch.ElapsedMilliseconds));
     }
 }

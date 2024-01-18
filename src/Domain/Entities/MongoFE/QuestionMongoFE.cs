@@ -9,7 +9,7 @@ using MongoDB.Bson;
 namespace stackblob.Domain.Entities.MongoFE;
 public class QuestionMongoFE
 {
-    public ObjectId QuestionId { get; set; }
+    public ObjectId _id { get; set; }
 
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

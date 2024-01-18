@@ -19,10 +19,10 @@ public class QuestionMongoFEConfiguration : IEntityTypeConfiguration<QuestionMon
     {
         builder.ToCollection("QUESTIONFE");
 
-        builder.HasKey(a => a.QuestionId);
+        builder.HasKey(a => a._id);
 
 
-        builder.Property(a => a.QuestionId)
+        builder.Property(a => a._id)
                 .HasValueGenerator<MongoDbValueGeneratorX>()
                 .ValueGeneratedNever()
                 .HasElementName("_id");

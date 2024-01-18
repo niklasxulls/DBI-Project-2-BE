@@ -40,14 +40,14 @@ public class QuestionMongoFEDeletePerformanceTests : TestBase
     {
         // create records (prepare)
         var questionsMongoFE = questionFakerMongoFE.Generate(size);
-        _mongoDB.GetCollection<QuestionMongoFE>(QUESTION_COLLECTION_NAME, null).InsertMany(questionsMongoFE);
+        _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_COLLECTION_NAME, null).InsertMany(questionsMongoFE);
 
         var dbStopWatch = new Stopwatch();
 
         // delete
         dbStopWatch.Start();
 
-        await _mongoDB.GetCollection<QuestionMongoFE>(QUESTION_COLLECTION_NAME).DeleteManyAsync(x => true);
+        await _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_COLLECTION_NAME).DeleteManyAsync(x => true);
 
         dbStopWatch.Stop();
 

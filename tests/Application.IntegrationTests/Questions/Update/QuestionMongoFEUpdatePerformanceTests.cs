@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using NuGet.Packaging;
+using Questions.ReadWithIndex;
 using stackblob.Application.Exceptions;
 using stackblob.Application.Models;
 using stackblob.Domain.Entities;
@@ -41,9 +42,13 @@ public class QuestionMongoFEUpdatePerformanceTests : TestBase
     {
         // create records (prepare)
         var questionsMongoFE = questionFakerMongoFE.Generate(size);
-
+        var questionMongFEBatches = questionsMongoFE.SplitIntoBatches(1000);
         var collection = _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_COLLECTION_NAME);
-        collection.InsertMany(questionsMongoFE);
+
+        foreach (var badge in questionMongFEBatches)
+        {
+            await collection.InsertManyAsync(badge);
+        }
 
         var dbStopWatch = new Stopwatch();
 

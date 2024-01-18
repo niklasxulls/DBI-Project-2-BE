@@ -14,7 +14,7 @@ public class QuestionMongoFE
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = new DateTime();
     public DateTime? UpdatedAt { get; set; }
     public QuestionUserMongoFE CreatedBy { get; set; }
 
@@ -25,20 +25,20 @@ public class QuestionMongoFE
 
 public class QuestionUserMongoFE
 {
-    public ObjectId UserId { get; set; }
+    public ObjectId _id { get; set; }
     public string Name { get; set; }
     public string Email { get; set; } = string.Empty;
 }
 
 public class QuestionTagMongoFE
 {
-    public ObjectId TagId { get; set; }
+    public ObjectId _id { get; set; }
     public string Name { get; set; }
 }
 
 public class QuestionAnswerMongoFE
 {
-    public ObjectId AnswerId { get; set; }
+    public ObjectId _id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }

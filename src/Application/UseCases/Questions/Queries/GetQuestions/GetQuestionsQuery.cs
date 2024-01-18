@@ -36,15 +36,16 @@ public class GetQuestionsQueryHandler : IRequestHandler<GetQuestionsQuery, IColl
         var client = new MongoClient(GlobalUtil.ConnectionString);
         var db = client.GetDatabase(GlobalUtil.MongoDbName);
 
-        var collection = db.GetCollection<QuestionMongoFE>("QUESTION_FE");
+        var collection = db.GetCollection<QuestionMongoFE>("QUESTION_FE_PROD");
 
 
         var filters = new List<FilterDefinition<QuestionMongoFE>>();
 
         if (!string.IsNullOrEmpty(request.SearchTerm))
         {
-            var searchTermFilter = Builders<QuestionMongoFE>.Filter.Regex(nameof(QuestionMongoFE.Title), new BsonRegularExpression(request.SearchTerm)) |
-                                   Builders<QuestionMongoFE>.Filter.Regex(nameof(QuestionMongoFE.Description), new BsonRegularExpression(request.SearchTerm));
+            var searchTermFilter = Builders<QuestionMongoFE>.Filter.Regex(nameof(QuestionMongoFE.Title), new BsonRegularExpression(request.SearchTerm, "i")) |
+                                   Builders<QuestionMongoFE>.Filter.Regex(nameof(QuestionMongoFE.Description), new BsonRegularExpression(request.SearchTerm, "i"));
+
             filters.Add(searchTermFilter);
         }
 
@@ -57,19 +58,15 @@ public class GetQuestionsQueryHandler : IRequestHandler<GetQuestionsQuery, IColl
 
         if (request.TagIds != null && request.TagIds.Any())
         {
-            var tagIdsFilter = Builders<QuestionMongoFE>.Filter.AnyIn(
-                nameof(QuestionMongoFE.Tags) + "." + nameof(QuestionTagMongoFE.TagId), 
-                request.TagIds.Select(id => new ObjectId(id))
-            );
+            var tagIdsBsonArray = new BsonArray(request.TagIds.Select(id => new ObjectId(id)));
+            var tagIdsFilter = new BsonDocument("Tags._id", new BsonDocument("$in", tagIdsBsonArray));
             filters.Add(tagIdsFilter);
         }
 
         if (request.UserIds != null && request.UserIds.Any())
         {
-            var userIdsFilter = Builders<QuestionMongoFE>.Filter.AnyIn(
-                nameof(QuestionMongoFE.CreatedBy) + "." + nameof(QuestionUserMongoFE.UserId), 
-                request.UserIds.Select(id => new ObjectId(id))
-            );
+            var userIdsBsonArray = new BsonArray(request.UserIds.Select(id => new ObjectId(id)));
+            var userIdsFilter = new BsonDocument("CreatedBy._id", new BsonDocument("$in", userIdsBsonArray));
             filters.Add(userIdsFilter);
         }
 

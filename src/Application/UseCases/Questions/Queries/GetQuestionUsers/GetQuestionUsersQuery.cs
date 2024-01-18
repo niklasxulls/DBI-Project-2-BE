@@ -31,12 +31,12 @@ public class GetQuestionUsersQueryHandler : IRequestHandler<GetQuestionUsersQuer
         var client = new MongoClient(GlobalUtil.ConnectionString);
         var db = client.GetDatabase(GlobalUtil.MongoDbName);
 
-        var collection = db.GetCollection<QuestionMongoFE>("QUESTION_FE");
+        var collection = db.GetCollection<QuestionMongoFE>("QUESTION_FE_PROD");
 
         // Getting distinct tag names
         var distinctUserNames = await collection.Distinct<string>("CreatedBy.Name", Builders<QuestionMongoFE>.Filter.Empty).ToListAsync();
         var distinctUserEmails = await collection.Distinct<string>("CreatedBy.Email", Builders<QuestionMongoFE>.Filter.Empty).ToListAsync();
-        var distinctUserIds = await collection.Distinct<ObjectId>("CreatedBy.UserId", Builders<QuestionMongoFE>.Filter.Empty).ToListAsync();
+        var distinctUserIds = await collection.Distinct<ObjectId>("CreatedBy._id", Builders<QuestionMongoFE>.Filter.Empty).ToListAsync();
 
         var users = new List<QuestionUserMongoFE>();
 
@@ -44,7 +44,7 @@ public class GetQuestionUsersQueryHandler : IRequestHandler<GetQuestionUsersQuer
         {
             users.Add(new()
             {
-                UserId = distinctUserIds.ElementAt(i),
+                _id = distinctUserIds.ElementAt(i),
                 Name = distinctUserNames.ElementAt(i),
                 Email = distinctUserEmails.ElementAt(i),
             });

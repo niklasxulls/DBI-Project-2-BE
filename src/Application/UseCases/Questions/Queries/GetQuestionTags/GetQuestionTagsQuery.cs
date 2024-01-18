@@ -31,13 +31,13 @@ public class GetQuestionTagsQueryHandler : IRequestHandler<GetQuestionTagsQuery,
         var client = new MongoClient(GlobalUtil.ConnectionString);
         var db = client.GetDatabase(GlobalUtil.MongoDbName);
 
-        var collection = db.GetCollection<QuestionMongoFE>("QUESTION_FE");
+        var collection = db.GetCollection<QuestionMongoFE>("QUESTION_FE_PROD");
 
         // Getting distinct tag names
         var distinctTagNames = await collection.Distinct<string>("Tags.Name", Builders<QuestionMongoFE>.Filter.Empty).ToListAsync();
 
         // Getting distinct tag IDs
-        var distinctTagIds = await collection.Distinct<ObjectId>("Tags.TagId", Builders<QuestionMongoFE>.Filter.Empty).ToListAsync();
+        var distinctTagIds = await collection.Distinct<ObjectId>("Tags._id", Builders<QuestionMongoFE>.Filter.Empty).ToListAsync();
 
         var tags = new List<QuestionTagMongoFE>();
 
@@ -46,7 +46,7 @@ public class GetQuestionTagsQueryHandler : IRequestHandler<GetQuestionTagsQuery,
             tags.Add(new()
             {
                 Name = distinctTagNames.ElementAt(i),
-                TagId = distinctTagIds.ElementAt(i)
+                _id = distinctTagIds.ElementAt(i)
             });
         }
 

@@ -72,7 +72,7 @@ public class QuestionMongoFEReadIndexPerformanceTests : TestBase
             var dbStopWatch = Stopwatch.StartNew();
 
             var questions = await _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_COLLECTION_NAME)
-                                          .Find(a => a.CreatedBy.UserId == firstUser.UserId)
+                                          .Find(a => a.CreatedBy._id == firstUser._id)
                                           .ToListAsync();
 
             dbStopWatch.Stop();
@@ -133,7 +133,7 @@ public class QuestionMongoFEReadIndexPerformanceTests : TestBase
             var dbStopWatch = Stopwatch.StartNew();
 
             var questions = await _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_WITH_INDEX_COLLECTION_NAME)
-                                          .Find(a => a.CreatedBy.UserId == firstUser.UserId)
+                                          .Find(a => a.CreatedBy._id == firstUser._id)
                                           .ToListAsync();
 
             dbStopWatch.Stop();

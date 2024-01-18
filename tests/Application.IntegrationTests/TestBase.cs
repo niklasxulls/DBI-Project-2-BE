@@ -137,6 +137,7 @@ public class TestBase : IAsyncLifetime
                 s.Description = f.PickRandom(questionTitlePool);
                 //s.Answers = answerFakerMongoREL.GenerateBetween(1, 3).ToList();
                 s.CreatedById = f.PickRandom(usersPoolMongoREL).UserId;
+                s.CreatedAt = f.Date.Between(new(2010, 01, 01), new DateTime(2024, 01, 01));
 
                 var tags = f.PickRandom(tagPoolMongoREL, new Random().Next(1, 5)).ToList();
 
@@ -158,13 +159,15 @@ public class TestBase : IAsyncLifetime
             {
                 a.Email = f.Person.Email;
                 a.Name = f.Person.FullName;
+                a._id = ObjectId.GenerateNewId();
             });
 
         questionUserPoolMongoFE = questionUserFakerMongoFE.Generate(20);
 
         tagPoolMongoFE = tagNamePool.Select(t => new QuestionTagMongoFE() {
             Name = t,
-        }).ToList();
+            _id = ObjectId.GenerateNewId()
+    }).ToList();
 
         answerFakerMongoFE = new Faker<QuestionAnswerMongoFE>()
             .Rules((f, a) =>
@@ -174,7 +177,8 @@ public class TestBase : IAsyncLifetime
                 a.Description = desc;
                 a.Title = desc.Substring(0, Math.Min(desc.Length, 30));
                 a.CreatedBy = f.PickRandom(questionUserPoolMongoFE);
-
+                a.CreatedAt = f.Date.Between(new(2010, 01, 01), new DateTime(2024, 01, 01));
+                a._id = ObjectId.GenerateNewId();
             });
 
 
@@ -185,6 +189,8 @@ public class TestBase : IAsyncLifetime
                 s.Description = f.PickRandom(questionTitlePool);
                 s.Answers = answerFakerMongoFE.GenerateBetween(1, 3).ToList();
                 s.CreatedBy = f.PickRandom(questionUserPoolMongoFE);
+                s.CreatedAt = f.Date.Between(new(2010, 01, 01), new DateTime(2024, 01, 01));
+
 
                 var tags = f.PickRandom(tagPoolMongoFE, new Random().Next(1, 5)).ToList();
                 s.Tags = tags;
@@ -224,6 +230,7 @@ public class TestBase : IAsyncLifetime
                 s.Description = f.PickRandom(questionTitlePool);
                 s.Answers = answerFakerSqlREL.GenerateBetween(1, 3).ToList();
                 s.CreatedBy = f.PickRandom(usersPoolSqlREL);
+                s.CreatedAt = f.Date.Between(new(2010, 01, 01), new DateTime(2024, 01, 01));
 
                 var tags = f.PickRandom(tagPoolSqlREL, new Random().Next(1, 5)).ToList();
 

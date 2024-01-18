@@ -80,7 +80,7 @@ public class QuestionMongoFEReadPerformanceTests : TestBase
         var dbStopWatch = Stopwatch.StartNew();
 
         var questions = await _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_COLLECTION_NAME)
-                                      .Find(a => a.CreatedBy.UserId == firstUser.UserId)
+                                      .Find(a => a.CreatedBy._id == firstUser._id)
                                       .ToListAsync();
 
         dbStopWatch.Stop();
@@ -112,7 +112,7 @@ public class QuestionMongoFEReadPerformanceTests : TestBase
 
 
         var questions = await _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_COLLECTION_NAME)
-                                      .Find(a => a.CreatedBy.UserId == firstUser.UserId)
+                                      .Find(a => a.CreatedBy._id == firstUser._id)
                                       .Project(a => new QuestionMongoFE()
                                         {
                                             Title = a.Title,
@@ -149,7 +149,7 @@ public class QuestionMongoFEReadPerformanceTests : TestBase
 
 
         var questions = await _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONREL_COLLECTION_NAME)
-                                      .Find(a => a.CreatedBy.UserId == firstUser.UserId)
+                                      .Find(a => a.CreatedBy._id == firstUser._id)
                                       .Project(a => new QuestionMongoFE()
                                       {
                                           Title = a.Title,

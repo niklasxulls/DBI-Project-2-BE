@@ -33,7 +33,7 @@ namespace Rest
                     //    context.Database.EnsureCreated();
                     //}
 
-                    //await StackblobDbContextSeed.SeedSampleData(context);
+                    await new StackblobDbContextSeed().SeedSampleData();
                 }
                 catch(Exception e)
                 {

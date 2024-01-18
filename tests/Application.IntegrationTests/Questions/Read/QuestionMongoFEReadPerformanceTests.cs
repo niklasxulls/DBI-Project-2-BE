@@ -51,7 +51,7 @@ public class QuestionMongoFEReadPerformanceTests : TestBase
 
         var dbStopWatch = Stopwatch.StartNew();
 
-        var questions = await _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_COLLECTION_NAME).FindAsync(default);
+        var questions = await _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_COLLECTION_NAME).Find(a => true).ToListAsync(default);
 
         dbStopWatch.Stop();
 

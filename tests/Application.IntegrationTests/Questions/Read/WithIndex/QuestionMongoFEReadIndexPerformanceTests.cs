@@ -63,16 +63,16 @@ public class QuestionMongoFEReadIndexPerformanceTests : TestBase
 
             var batches = questionsNew.SplitIntoBatches(1000);
 
-            foreach (var badge in batches)
+            foreach (var batch in batches)
             {
-                await collection.InsertManyAsync(questionsNew);
+                await collection.InsertManyAsync(batch);
             }
 
 
             var dbStopWatch = Stopwatch.StartNew();
 
             var questions = await _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_COLLECTION_NAME)
-                                          .Find(a => a.CreatedBy._id == firstUser._id)
+                                          .Find(a => a.Title.ToLower().Contains("django"))
                                           .ToListAsync();
 
             dbStopWatch.Stop();
@@ -102,14 +102,14 @@ public class QuestionMongoFEReadIndexPerformanceTests : TestBase
 
         // create index
         // Define the index (e.g., an ascending index on the "fieldName" field)
-        var indexKeys = Builders<QuestionMongoFE>.IndexKeys.Ascending("CreatedBy.UserId");
+        var indexKeys = Builders<QuestionMongoFE>.IndexKeys.Ascending("Title");
 
         // Create the index
         var indexModel = new CreateIndexModel<QuestionMongoFE>(indexKeys);
         collection.Indexes.CreateOne(indexModel);
 
         // assume it takes that long to create the index
-        Thread.Sleep(Math.Max(size, 5000));
+        Thread.Sleep(Math.Max(size > 1000 ? 0 : size, 5000));
 
         // gather use
         var firstUser = questionUserPoolMongoFE.First();
@@ -124,16 +124,16 @@ public class QuestionMongoFEReadIndexPerformanceTests : TestBase
             var questionsNew = questionFakerMongoFE.Generate(size);
             var batches = questionsNew.SplitIntoBatches(5000);
 
-            foreach(var badge in batches)
+            foreach(var batch in batches)
             {
-                await collection.InsertManyAsync(questionsNew);
+                await collection.InsertManyAsync(batch);
             }
 
 
             var dbStopWatch = Stopwatch.StartNew();
 
             var questions = await _mongoDB.GetCollection<QuestionMongoFE>(QUESTIONFE_WITH_INDEX_COLLECTION_NAME)
-                                          .Find(a => a.CreatedBy._id == firstUser._id)
+                                          .Find(a => a.Title.ToLower().Contains("django"))
                                           .ToListAsync();
 
             dbStopWatch.Stop();
